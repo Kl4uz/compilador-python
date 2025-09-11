@@ -28,7 +28,7 @@ compilador-python/
 ├── requirements.txt          # Dependências do projeto
 ├── .gitignore                # Arquivos ignorados pelo Git
 ├── src/                      # Código fonte
-│   ├── lexer.py
+│   ├── lexer.py              # Analisador léxico
 │   ├── parser.py
 │   ├── semantic.py
 │   ├── codegen.py
@@ -58,8 +58,8 @@ Instale as dependências com:
 ## Configuração inicial 
 1. Clone o repositorio
 ```bash
-git clone https://github.com/seu-usuario/mini-compilador-python.git
-cd mini-compilador-python
+git clone https://github.com/Kl4uz/compilador-python.git
+cd compilador-python
 ```
 
 2. Crie um ambiente virtual
@@ -82,3 +82,42 @@ pip install -r requirements.txt
 
 ## Licenca 
 Este projeto esta licenciado sob a MIT license.
+
+
+## Gramatica - Forma BNF
+
+```bnf
+
+<program> ::= <stmt_list>
+
+<stmt_list> ::= <stmt> | <stmt> <stmt_list>
+
+<stmt> ::= <assign_stmt> 
+         | <if_stmt> 
+         | <while_stmt> 
+         | <print_stmt>
+
+<assign_stmt> ::= <id> "=" <expr> ";"
+
+<if_stmt> ::= "if" "(" <expr> ")" "{" <stmt_list> "}" 
+            | "if" "(" <expr> ")" "{" <stmt_list> "}" "else" "{" <stmt_list> "}"
+
+<while_stmt> ::= "while" "(" <expr> ")" "{" <stmt_list> "}"
+
+<print_stmt> ::= "print" "(" <expr> ")" ";"
+
+<expr> ::= <term> | <expr> "+" <term> | <expr> "-" <term>
+
+<term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
+
+<factor> ::= <number> | <id> | "(" <expr> ")"
+
+<id> ::= <letter> { <letter> | <digit> }
+
+<number> ::= <digit> { <digit> }
+
+<letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
+
+<digit> ::= "0" | "1" | ... | "9"
+
+```
