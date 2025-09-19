@@ -121,3 +121,72 @@ Este projeto esta licenciado sob a MIT license.
 <digit> ::= "0" | "1" | ... | "9"
 
 ```
+
+
+# Autômato Finito Determinístico - Compilador Linguagem Mínima
+
+## Tokens da Linguagem
+- **Palavras-chave**: PRINT, IF, ELSE, WHILE, RETURN, INT
+- **Operadores**: = (atribuição), + (soma)
+- **Delimitadores**: ; (ponto e vírgula), ( ) (parênteses)
+- **Literais**: números inteiros
+- **Identificadores**: variáveis e funções
+
+## Alfabeto de Entrada
+- **dígito**: 0-9
+- **letra**: a-z, A-Z
+- **_**: underscore
+- **=**: igual
+- **+**: mais
+- **;**: ponto e vírgula
+- **(**: parêntese esquerdo
+- **)**: parêntese direito
+- **espaço**: espaço, tab, quebra de linha
+- **outro**: qualquer outro caractere
+
+---
+
+## Tabela de Transições do AFD
+
+| Estado | dígito | letra | _ | = | + | ; | ( | ) | espaço | outro |
+|--------|--------|-------|---|---|---|---|---|---|---------|-------|
+| **q0** | q_num | q_id | q_id | q_equals | q_plus | q_scolon | q_lparen | q_rparen | q0 | qE |
+| **q_num** | q_num | qE | qE | q0 | q0 | q0 | q0 | q0 | q0 | qE |
+| **q_id** | q_id | q_id | q_id | q0 | q0 | q0 | q0 | q0 | q0 | qE |
+| **q_equals** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
+| **q4** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
+| **q_scolon** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
+| **q_lparen** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
+| **q_rparen** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
+| **qE** | qE | qE | qE | qE | qE | qE | qE | qE | qE | qE |
+
+---
+
+## Descrição dos Estados
+
+### Estados Principais
+- **q0**: Estado inicial (aguardando próximo token)
+- **q1**: Reconhecendo número inteiro
+- **q2**: Reconhecendo identificador/palavra-chave
+- **q3**: Token de atribuição (=)
+- **q4**: Token de soma (+)
+- **q5**: Token ponto e vírgula (;)
+- **q6**: Token parêntese esquerdo (()
+- **q7**: Token parêntese direito ())
+- **qE**: Estado de erro
+
+### Estados Finais e Tokens Gerados
+
+| Estado Final | Token Gerado | Descrição |
+|-------------|-------------|-----------|
+| **q1** | TOKEN_NUMBER | Número inteiro |
+| **q2** | TOKEN_ID ou TOKEN_KEYWORD | Identificador ou palavra-chave* |
+| **q3** | TOKEN_ASSIGN | Operador de atribuição |
+| **q4** | TOKEN_PLUS | Operador de soma |
+| **q5** | TOKEN_SEMICOLON | Ponto e vírgula |
+| **q6** | TOKEN_LPAREN | Parêntese esquerdo |
+| **q7** | TOKEN_RPAREN | Parêntese direito |
+
+*Para o estado q2, é necessária verificação adicional para determinar se é palavra-chave.
+
+---
