@@ -16,7 +16,7 @@ Este mini compilador processará uma linguagem simples (a ser definida, ex.: min
 ### Equipe
 - Lucas Farias
 - José Lucas
-- Ester Araiz
+- Ester Arraiz
 - Henrique Noronha
 
 *(Substitua os nomes acima pelos membros reais da equipe.)*
