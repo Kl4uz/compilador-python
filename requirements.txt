@@ -1,0 +1,4 @@
+ply==3.11
+pytest==7.4.0
+black==24.4.2
+pre-commit==3.3.3

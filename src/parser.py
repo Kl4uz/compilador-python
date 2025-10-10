@@ -65,3 +65,11 @@ def p_error(p):
         print("Syntax error at EOF")
 
 parser = yacc.yacc()
+
+# Função para pretty-print da AST (recursiva)
+def print_ast(node, indent=0):
+    if node is None:
+        return
+    print('  ' * indent + f"{node.type}" + (f" ({node.value})" if node.value else ""))
+    for child in node.children:
+        print_ast(child, indent + 1)
