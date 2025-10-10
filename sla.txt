@@ -1,6 +1,0 @@
-a etapa de tradução dirigida por sintaxe, as ações semânticas implementadas
-nas regras do parser não apenas constroem a AST, mas também podem ser estendidas 
-para incluir informações de tipos e escopos, tornando a árvore anotada e apta
-para análises semânticas posteriores. Isso facilita a verificação de tipos,
-o controle de variáveis e a detecção de possíveis erros semânticos, além de 
-preparar a AST para a geração de código.
