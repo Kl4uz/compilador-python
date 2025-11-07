@@ -1,0 +1,17 @@
+int multiplicar(int x, int y) {
+    int resultado = x * y;
+    return resultado;
+}
+
+int calcular(int a, int b) {
+    int soma = a + b;
+    int produto = multiplicar(a, b);
+    int total = soma + produto;
+    return total;
+}
+
+int main() {
+    int valor = calcular(3, 4);
+    print(valor);
+    return 0;
+}

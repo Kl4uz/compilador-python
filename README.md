@@ -31,18 +31,27 @@ compilador-python/
 ├── requirements.txt          # Dependências do projeto
 ├── .gitignore                # Arquivos ignorados pelo Git
 ├── src/                      # Código fonte
-│   ├── lexer.py              # Analisador léxico
-│   ├── parser.py
-│   ├── semantic.py
-│   ├── codegen.py
-│   ├── main.py
-├── tests/                    # Testes unitários
+│   ├── lexer.py              # Analisador léxico (com suporte a funções)
+│   ├── parser.py             # Analisador sintático
+│   ├── semantic.py           # Analisador semântico
+│   ├── codegen.py            # Gerador de código TAC (versão básica)
+│   ├── codegen_full.py       # Gerador de código com funções
+│   ├── symbol_table.py       # Tabela de símbolos com escopos (ETAPA 7)
+│   ├── runtime.py            # Activation Records e Runtime Stack (ETAPA 7)
+│   ├── interpreter.py        # Interpretador TAC (ETAPA 7)
+│   ├── compiler_etapa7.py    # Sistema completo integrado (ETAPA 7)
+│   └── main.py               # Ponto de entrada principal
+├── tests/                    # Testes unitários e exemplos
 │   ├── test_lexer.py
 │   ├── test_parser.py
-├── examples/                 # Exemplos de entrada
-│   └── hello_world.txt
-└── docs/                     # Documentação detalhada
-└── grammar.md
+│   ├── hello_world.txt       # Exemplo básico
+│   ├── code.txt              # Exemplo de expressões
+│   └── test_functions.txt    # Exemplo com funções (ETAPA 7)
+├── docs/                     # Documentação detalhada
+│   ├── grammar.md
+│   └── ETAPA7_AMBIENTES_EXECUCAO.md  # Documentação da Etapa 7
+└── examples/                 # Exemplos de entrada
+    └── hello_world.txt
 ```
 
 ## Dependências
@@ -87,6 +96,70 @@ pip install -r requirements.txt
 - Crie uma branch para sua feature: ``git checkout -b feature/nome-da-tarefa.``
 - Faça commits atômicos com mensagens claras (ex.: `feat: adiciona lexer para operadores`).
 - Envie um Pull Request para a branch `main` com descrição detalhada.
+
+---
+
+## 🎯 Etapa 7 - Ambientes de Execução (IMPLEMENTADO!)
+
+### ✅ Funcionalidades Implementadas:
+
+#### **Atividade 1 - Modelagem do Ambiente de Execução:**
+- ✅ Organização de memória (código, dados globais, heap, stack)
+- ✅ Comportamento da pilha de ativação para chamadas de funções
+- ✅ Armazenamento de variáveis globais, locais e parâmetros
+
+#### **Atividade 2 - Implementação do Registro de Ativação:**
+- ✅ Estrutura completa de Activation Record contendo:
+  * Parâmetros formais
+  * Variáveis locais
+  * Valor de retorno
+  * Links dinâmico e estático
+  * Endereço de retorno
+  * Variáveis temporárias
+- ✅ Demonstração de criação e destruição durante execução
+
+#### **Atividade 3 - Integração com Tabela de Símbolos:**
+- ✅ Associação de escopo e offset às variáveis
+- ✅ Distinção entre variáveis globais e locais
+- ✅ Simulação de recuperação de valores durante chamada de função
+
+### 🚀 Como Executar a Etapa 7:
+
+```bash
+# Executar o compilador completo com exemplo de função
+python src/compiler_etapa7.py
+```
+
+### 📖 Documentação Completa:
+Veja a documentação detalhada em: **`docs/ETAPA7_AMBIENTES_EXECUCAO.md`**
+
+### 🧪 Código de Teste:
+```c
+int soma(int a, int b) {
+    int r = a + b;
+    return r;
+}
+
+int main() {
+    int x = soma(2, 3);
+    print(x);
+    return 0;
+}
+```
+
+**Saída:**
+```
+>>> OUTPUT: 5
+```
+
+### 📊 Recursos Implementados:
+- **Tabela de Símbolos** com escopos aninhados (`src/symbol_table.py`)
+- **Activation Records** completos (`src/runtime.py`)
+- **Runtime Stack** para gerenciar chamadas (`src/runtime.py`)
+- **Gerador de TAC** para funções (`src/compiler_etapa7.py`)
+- **Interpretador TAC** com simulação de execução (`src/interpreter.py`)
+
+---
 
 ## Licenca
 

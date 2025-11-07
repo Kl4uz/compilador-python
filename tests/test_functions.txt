@@ -1,0 +1,9 @@
+int soma(int a, int b) {
+    int r = a + b;
+    return r;
+}
+
+int main() {
+    int x = soma(2, 3);
+    return 0;
+}

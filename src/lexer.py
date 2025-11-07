@@ -11,7 +11,10 @@ tokens = (
     'EQUALS',
     'LPAREN',
     'RPAREN',
+    'LBRACE',
+    'RBRACE',
     'SEMICOLON',
+    'COMMA',
     'PRINT'
 )
 
@@ -27,6 +30,7 @@ reserved = {
 }
 
 # Adiciona as palavras reservadas aos tokens
+tokens = tokens + tuple(reserved.values())
 
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
@@ -35,10 +39,10 @@ t_DIVIDE  = r'/'
 t_EQUALS  = r'='
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
+t_LBRACE  = r'\{'
+t_RBRACE  = r'\}'
 t_SEMICOLON = r';'
-t_PRINT = r'print'
-
-
+t_COMMA = r','
 
 # um identificador é uma letra seguida de letras, dígitos ou underscores
 def t_ID(t):

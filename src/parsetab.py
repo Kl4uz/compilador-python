@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSDIVIDE EQUALS ID LPAREN MINUS NUMBER PLUS PRINT RPAREN SEMICOLON TIMESprogram : statement_liststatement_list : statement_list statement\n                      | statementstatement : ID EQUALS expression SEMICOLONstatement : PRINT LPAREN expression RPAREN SEMICOLONexpression : termterm : term TIMES factor\n            | term DIVIDE factorterm : factorfactor : NUMBERfactor : IDfactor : LPAREN expression RPARENexpression : expression PLUS term\n                  | expression MINUS term'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSCOMMA DIVIDE ELSE EQUALS ID IF INT LBRACE LPAREN MINUS NUMBER PLUS PRINT PRINT RBRACE RETURN RPAREN SEMICOLON TIMES WHILEprogram : statement_liststatement_list : statement_list statement\n                      | statementstatement : ID EQUALS expression SEMICOLONstatement : PRINT LPAREN expression RPAREN SEMICOLONexpression : termterm : term TIMES factor\n            | term DIVIDE factorterm : factorfactor : NUMBERfactor : IDfactor : LPAREN expression RPARENexpression : expression PLUS term\n                  | expression MINUS term'
     
 _lr_action_items = {'ID':([0,2,3,6,7,8,14,16,17,18,19,20,28,],[4,4,-3,-2,9,9,9,-4,9,9,9,9,-5,]),'PRINT':([0,2,3,6,16,28,],[5,5,-3,-2,-4,-5,]),'$end':([1,2,3,6,16,28,],[0,-1,-3,-2,-4,-5,]),'EQUALS':([4,],[7,]),'LPAREN':([5,7,8,14,17,18,19,20,],[8,14,14,14,14,14,14,14,]),'NUMBER':([7,8,14,17,18,19,20,],[13,13,13,13,13,13,13,]),'TIMES':([9,11,12,13,23,24,25,26,27,],[-11,19,-9,-10,19,19,-7,-8,-12,]),'DIVIDE':([9,11,12,13,23,24,25,26,27,],[-11,20,-9,-10,20,20,-7,-8,-12,]),'SEMICOLON':([9,10,11,12,13,22,23,24,25,26,27,],[-11,16,-6,-9,-10,28,-13,-14,-7,-8,-12,]),'PLUS':([9,10,11,12,13,15,21,23,24,25,26,27,],[-11,17,-6,-9,-10,17,17,-13,-14,-7,-8,-12,]),'MINUS':([9,10,11,12,13,15,21,23,24,25,26,27,],[-11,18,-6,-9,-10,18,18,-13,-14,-7,-8,-12,]),'RPAREN':([9,11,12,13,15,21,23,24,25,26,27,],[-11,-6,-9,-10,22,27,-13,-14,-7,-8,-12,]),}
 
@@ -27,18 +27,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement_list','program',1,'p_program','parser.py',12),
-  ('statement_list -> statement_list statement','statement_list',2,'p_stmt_list','parser.py',16),
-  ('statement_list -> statement','statement_list',1,'p_stmt_list','parser.py',17),
-  ('statement -> ID EQUALS expression SEMICOLON','statement',4,'p_stmt_assign','parser.py',24),
-  ('statement -> PRINT LPAREN expression RPAREN SEMICOLON','statement',5,'p_stmt_print','parser.py',28),
-  ('expression -> term','expression',1,'p_expr_term','parser.py',32),
-  ('term -> term TIMES factor','term',3,'p_term_muldiv','parser.py',36),
-  ('term -> term DIVIDE factor','term',3,'p_term_muldiv','parser.py',37),
-  ('term -> factor','term',1,'p_term_factor','parser.py',41),
-  ('factor -> NUMBER','factor',1,'p_factor_num','parser.py',45),
-  ('factor -> ID','factor',1,'p_factor_id','parser.py',49),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','parser.py',53),
-  ('expression -> expression PLUS term','expression',3,'p_expr_addsub','parser.py',57),
-  ('expression -> expression MINUS term','expression',3,'p_expr_addsub','parser.py',58),
+  ('program -> statement_list','program',1,'p_program','codegen.py',83),
+  ('statement_list -> statement_list statement','statement_list',2,'p_stmt_list','codegen.py',87),
+  ('statement_list -> statement','statement_list',1,'p_stmt_list','codegen.py',88),
+  ('statement -> ID EQUALS expression SEMICOLON','statement',4,'p_stmt_assign','codegen.py',95),
+  ('statement -> PRINT LPAREN expression RPAREN SEMICOLON','statement',5,'p_stmt_print','codegen.py',103),
+  ('expression -> term','expression',1,'p_expr_term','codegen.py',109),
+  ('term -> term TIMES factor','term',3,'p_term_muldiv','codegen.py',113),
+  ('term -> term DIVIDE factor','term',3,'p_term_muldiv','codegen.py',114),
+  ('term -> factor','term',1,'p_term_factor','codegen.py',121),
+  ('factor -> NUMBER','factor',1,'p_factor_num','codegen.py',125),
+  ('factor -> ID','factor',1,'p_factor_id','codegen.py',129),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','codegen.py',137),
+  ('expression -> expression PLUS term','expression',3,'p_expr_addsub','codegen.py',141),
+  ('expression -> expression MINUS term','expression',3,'p_expr_addsub','codegen.py',142),
 ]
