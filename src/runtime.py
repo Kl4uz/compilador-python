@@ -3,6 +3,9 @@ Ambientes de Execução - Etapa 7
 Implementação de Activation Records e Runtime Stack
 """
 
+import os
+from typing import Any, Dict, List
+
 class ActivationRecord:
     """
     Registro de Ativação (Stack Frame)
@@ -12,7 +15,7 @@ class ActivationRecord:
         self.function_name = function_name
         self.parameters = {}          # nome -> valor dos parâmetros formais
         self.local_variables = {}     # nome -> valor das variáveis locais
-        self.return_value = None      # valor de retorno da função
+        self.return_value = Any = None      # valor de retorno da função
         self.dynamic_link = None      # ponteiro para o AR do chamador (pilha)
         self.static_link = None       # ponteiro para o AR do escopo léxico pai
         self.return_address = return_address  # endereço de retorno após chamada
@@ -27,15 +30,14 @@ class ActivationRecord:
         self.local_variables[name] = value
     
     def get_value(self, name):
-        """Busca o valor de uma variável (parâmetro, local ou temporária)"""
+        """Busca o valor de uma variável **somente neste AR** (parâmetro, local ou temporária)"""
         if name in self.parameters:
             return self.parameters[name]
-        elif name in self.local_variables:
+        if name in self.local_variables:
             return self.local_variables[name]
-        elif name in self.temporaries:
+        if name in self.temporaries:
             return self.temporaries[name]
-        else:
-            return None
+        return None
     
     def set_temporary(self, name, value):
         """Define o valor de uma variável temporária"""
@@ -45,7 +47,7 @@ class ActivationRecord:
         return (f"AR[{self.function_name}]\n"
                 f"  Params: {self.parameters}\n"
                 f"  Locals: {self.local_variables}\n"
-                f"  Return: {self.return_value}\n"
+                f"  Return: {self.return_value: int | float | None = None}\n"
                 f"  Temps: {self.temporaries}")
 
 
@@ -88,41 +90,55 @@ class RuntimeStack:
     
     def get_value(self, name):
         """
-        Busca o valor de uma variável
-        Primeiro no AR atual, depois na memória global
+        Busca o valor de uma variável:
+         1) AR atual
+         2) percorre dynamic_link (chamadores) até encontrar
+         3) memória global
+        Se não encontrado, lança Exceção.
         """
-        # Tenta buscar no AR atual
-        if self.stack:
-            current_ar = self.current_frame()
+        # Se for número literal passado por engano (ex.: get_value(3)), retorna direto
+        if isinstance(name, (int, float)):
+            return name
+
+        # Tenta no AR atual
+        current_ar = self.current_frame()
+        if current_ar is not None:
             value = current_ar.get_value(name)
             if value is not None:
                 return value
-        
-        # Se não encontrou, busca na memória global
+
+            # Percorre os ARs dos chamadores via dynamic_link
+            ar = current_ar.dynamic_link
+            while ar is not None:
+                v = ar.get_value(name)
+                if v is not None:
+                    return v
+                ar = ar.dynamic_link
+
+        # Se não encontrou em nenhum frame, busca na memória global
         if name in self.global_memory:
             return self.global_memory[name]
         
-        # Se é um número, retorna diretamente
-        if isinstance(name, (int, float)):
-            return name
-        
+        # Não encontrado
         raise Exception(f"Erro: Variável '{name}' não encontrada")
     
     def set_value(self, name, value):
         """
         Define o valor de uma variável
         No AR atual (se houver) ou na memória global
+        Se já existe como parâmetro ou local no AR atual, atualiza.
+        Senão, cria como variável local no AR atual.
         """
-        if self.stack:
-            current_ar = self.current_frame()
-            # Se já existe no AR atual, atualiza
-            if name in current_ar.local_variables or name in current_ar.parameters:
-                if name in current_ar.parameters:
-                    current_ar.set_parameter(name, value)
-                else:
-                    current_ar.set_local(name, value)
+        current_ar = self.current_frame()
+        if current_ar is not None:
+            # Se já existe no AR atual, atualiza o local/parâmetro
+            if name in current_ar.parameters:
+                current_ar.set_parameter(name, value)
                 return
-            # Senão, cria como variável local
+            if name in current_ar.local_variables:
+                current_ar.set_local(name, value)
+                return
+            # Senão, cria como local no AR atual
             current_ar.set_local(name, value)
         else:
             # Sem AR, armazena como global
@@ -130,8 +146,9 @@ class RuntimeStack:
     
     def set_temporary(self, name, value):
         """Define o valor de uma variável temporária no AR atual"""
-        if self.stack:
-            self.current_frame().set_temporary(name, value)
+        current_ar = self.current_frame()
+        if current_ar is not None:
+            current_ar.set_temporary(name, value)
         else:
             self.global_memory[name] = value
     
@@ -162,6 +179,30 @@ class RuntimeStack:
                     print(f"  Retorno: {ar.return_value}")
         
         print("\n===================================\n")
+
+
+# Função de alto-nível que simula a soma usando o RuntimeStack
+def simulate_soma(runtime, a, b):
+    """Simula: soma(a,b) dentro de main, retorna o resultado"""
+    # empilha soma
+    soma_ar = ActivationRecord("soma", return_address="main+ret")
+    soma_ar.set_parameter("a", a)
+    soma_ar.set_parameter("b", b)
+    runtime.push(soma_ar)
+
+    # executa r = a + b usando runtime
+    aval = runtime.get_value("a")
+    bval = runtime.get_value("b")
+    r = aval + bval
+    # guarda r como variável local em soma
+    runtime.set_value("r", r)
+    runtime.print_stack()
+
+    # retorno de soma
+    popped = runtime.pop()
+    popped.return_value = r
+    print(f"[soma] retornando valor: {popped.return_value}")
+    return popped.return_value
 
 
 # Testes

@@ -2,82 +2,89 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    COMMA
     ELSE
     IF
-    INT
-    LBRACE
-    RBRACE
-    RETURN
     WHILE
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> statement_list
-Rule 2     statement_list -> statement_list statement
-Rule 3     statement_list -> statement
-Rule 4     statement -> ID EQUALS expression SEMICOLON
-Rule 5     statement -> PRINT LPAREN expression RPAREN SEMICOLON
-Rule 6     expression -> term
-Rule 7     term -> term TIMES factor
-Rule 8     term -> term DIVIDE factor
-Rule 9     term -> factor
-Rule 10    factor -> NUMBER
-Rule 11    factor -> ID
-Rule 12    factor -> LPAREN expression RPAREN
-Rule 13    expression -> expression PLUS term
-Rule 14    expression -> expression MINUS term
+Rule 1     program -> func_list
+Rule 2     func_list -> func_list function
+Rule 3     func_list -> function
+Rule 4     function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE
+Rule 5     function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE
+Rule 6     params -> params COMMA INT ID
+Rule 7     params -> INT ID
+Rule 8     stmts -> stmts stmt
+Rule 9     stmts -> stmt
+Rule 10    stmt -> INT ID EQUALS expr SEMICOLON
+Rule 11    stmt -> ID EQUALS expr SEMICOLON
+Rule 12    stmt -> RETURN expr SEMICOLON
+Rule 13    stmt -> RETURN SEMICOLON
+Rule 14    stmt -> PRINT LPAREN expr RPAREN SEMICOLON
+Rule 15    expr -> expr PLUS expr
+Rule 16    expr -> expr MINUS expr
+Rule 17    expr -> expr TIMES expr
+Rule 18    expr -> expr DIVIDE expr
+Rule 19    expr -> NUMBER
+Rule 20    expr -> ID
+Rule 21    expr -> ID LPAREN args RPAREN
+Rule 22    expr -> ID LPAREN RPAREN
+Rule 23    args -> args COMMA expr
+Rule 24    args -> expr
+Rule 25    expr -> LPAREN expr RPAREN
 
 Terminals, with rules where they appear
 
-COMMA                : 
-DIVIDE               : 8
+COMMA                : 6 23
+DIVIDE               : 18
 ELSE                 : 
-EQUALS               : 4
-ID                   : 4 11
+EQUALS               : 10 11
+ID                   : 4 5 6 7 10 11 20 21 22
 IF                   : 
-INT                  : 
-LBRACE               : 
-LPAREN               : 5 12
-MINUS                : 14
-NUMBER               : 10
-PLUS                 : 13
-PRINT                : 5
-RBRACE               : 
-RETURN               : 
-RPAREN               : 5 12
-SEMICOLON            : 4 5
-TIMES                : 7
+INT                  : 4 5 6 7 10
+LBRACE               : 4 5
+LPAREN               : 4 5 14 21 22 25
+MINUS                : 16
+NUMBER               : 19
+PLUS                 : 15
+PRINT                : 14
+RBRACE               : 4 5
+RETURN               : 12 13
+RPAREN               : 4 5 14 21 22 25
+SEMICOLON            : 10 11 12 13 14
+TIMES                : 17
 WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 4 5 12 13 14
-factor               : 7 8 9
+args                 : 21 23
+expr                 : 10 11 12 14 15 15 16 16 17 17 18 18 23 24 25
+func_list            : 1 2
+function             : 2 3
+params               : 4 6
 program              : 0
-statement            : 2 3
-statement_list       : 1 2
-term                 : 6 7 8 13 14
+stmt                 : 8 9
+stmts                : 4 5 8
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . statement_list
-    (2) statement_list -> . statement_list statement
-    (3) statement_list -> . statement
-    (4) statement -> . ID EQUALS expression SEMICOLON
-    (5) statement -> . PRINT LPAREN expression RPAREN SEMICOLON
+    (1) program -> . func_list
+    (2) func_list -> . func_list function
+    (3) func_list -> . function
+    (4) function -> . INT ID LPAREN params RPAREN LBRACE stmts RBRACE
+    (5) function -> . INT ID LPAREN RPAREN LBRACE stmts RBRACE
 
-    ID              shift and go to state 4
-    PRINT           shift and go to state 5
+    INT             shift and go to state 4
 
     program                        shift and go to state 1
-    statement_list                 shift and go to state 2
-    statement                      shift and go to state 3
+    func_list                      shift and go to state 2
+    function                       shift and go to state 3
 
 state 1
 
@@ -87,340 +94,806 @@ state 1
 
 state 2
 
-    (1) program -> statement_list .
-    (2) statement_list -> statement_list . statement
-    (4) statement -> . ID EQUALS expression SEMICOLON
-    (5) statement -> . PRINT LPAREN expression RPAREN SEMICOLON
+    (1) program -> func_list .
+    (2) func_list -> func_list . function
+    (4) function -> . INT ID LPAREN params RPAREN LBRACE stmts RBRACE
+    (5) function -> . INT ID LPAREN RPAREN LBRACE stmts RBRACE
 
-    $end            reduce using rule 1 (program -> statement_list .)
-    ID              shift and go to state 4
-    PRINT           shift and go to state 5
+    $end            reduce using rule 1 (program -> func_list .)
+    INT             shift and go to state 4
 
-    statement                      shift and go to state 6
+    function                       shift and go to state 5
 
 state 3
 
-    (3) statement_list -> statement .
+    (3) func_list -> function .
 
-    ID              reduce using rule 3 (statement_list -> statement .)
-    PRINT           reduce using rule 3 (statement_list -> statement .)
-    $end            reduce using rule 3 (statement_list -> statement .)
+    INT             reduce using rule 3 (func_list -> function .)
+    $end            reduce using rule 3 (func_list -> function .)
 
 
 state 4
 
-    (4) statement -> ID . EQUALS expression SEMICOLON
+    (4) function -> INT . ID LPAREN params RPAREN LBRACE stmts RBRACE
+    (5) function -> INT . ID LPAREN RPAREN LBRACE stmts RBRACE
 
-    EQUALS          shift and go to state 7
+    ID              shift and go to state 6
 
 
 state 5
 
-    (5) statement -> PRINT . LPAREN expression RPAREN SEMICOLON
+    (2) func_list -> func_list function .
 
-    LPAREN          shift and go to state 8
+    INT             reduce using rule 2 (func_list -> func_list function .)
+    $end            reduce using rule 2 (func_list -> func_list function .)
 
 
 state 6
 
-    (2) statement_list -> statement_list statement .
+    (4) function -> INT ID . LPAREN params RPAREN LBRACE stmts RBRACE
+    (5) function -> INT ID . LPAREN RPAREN LBRACE stmts RBRACE
 
-    ID              reduce using rule 2 (statement_list -> statement_list statement .)
-    PRINT           reduce using rule 2 (statement_list -> statement_list statement .)
-    $end            reduce using rule 2 (statement_list -> statement_list statement .)
+    LPAREN          shift and go to state 7
 
 
 state 7
 
-    (4) statement -> ID EQUALS . expression SEMICOLON
-    (6) expression -> . term
-    (13) expression -> . expression PLUS term
-    (14) expression -> . expression MINUS term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (4) function -> INT ID LPAREN . params RPAREN LBRACE stmts RBRACE
+    (5) function -> INT ID LPAREN . RPAREN LBRACE stmts RBRACE
+    (6) params -> . params COMMA INT ID
+    (7) params -> . INT ID
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    RPAREN          shift and go to state 10
+    INT             shift and go to state 8
 
-    expression                     shift and go to state 10
-    term                           shift and go to state 11
-    factor                         shift and go to state 12
+    params                         shift and go to state 9
 
 state 8
 
-    (5) statement -> PRINT LPAREN . expression RPAREN SEMICOLON
-    (6) expression -> . term
-    (13) expression -> . expression PLUS term
-    (14) expression -> . expression MINUS term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (7) params -> INT . ID
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    ID              shift and go to state 11
 
-    expression                     shift and go to state 15
-    term                           shift and go to state 11
-    factor                         shift and go to state 12
 
 state 9
 
-    (11) factor -> ID .
+    (4) function -> INT ID LPAREN params . RPAREN LBRACE stmts RBRACE
+    (6) params -> params . COMMA INT ID
 
-    TIMES           reduce using rule 11 (factor -> ID .)
-    DIVIDE          reduce using rule 11 (factor -> ID .)
-    SEMICOLON       reduce using rule 11 (factor -> ID .)
-    PLUS            reduce using rule 11 (factor -> ID .)
-    MINUS           reduce using rule 11 (factor -> ID .)
-    RPAREN          reduce using rule 11 (factor -> ID .)
+    RPAREN          shift and go to state 12
+    COMMA           shift and go to state 13
 
 
 state 10
 
-    (4) statement -> ID EQUALS expression . SEMICOLON
-    (13) expression -> expression . PLUS term
-    (14) expression -> expression . MINUS term
+    (5) function -> INT ID LPAREN RPAREN . LBRACE stmts RBRACE
 
-    SEMICOLON       shift and go to state 16
-    PLUS            shift and go to state 17
-    MINUS           shift and go to state 18
+    LBRACE          shift and go to state 14
 
 
 state 11
 
-    (6) expression -> term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (7) params -> INT ID .
 
-    SEMICOLON       reduce using rule 6 (expression -> term .)
-    PLUS            reduce using rule 6 (expression -> term .)
-    MINUS           reduce using rule 6 (expression -> term .)
-    RPAREN          reduce using rule 6 (expression -> term .)
-    TIMES           shift and go to state 19
-    DIVIDE          shift and go to state 20
+    RPAREN          reduce using rule 7 (params -> INT ID .)
+    COMMA           reduce using rule 7 (params -> INT ID .)
 
 
 state 12
 
-    (9) term -> factor .
+    (4) function -> INT ID LPAREN params RPAREN . LBRACE stmts RBRACE
 
-    TIMES           reduce using rule 9 (term -> factor .)
-    DIVIDE          reduce using rule 9 (term -> factor .)
-    SEMICOLON       reduce using rule 9 (term -> factor .)
-    PLUS            reduce using rule 9 (term -> factor .)
-    MINUS           reduce using rule 9 (term -> factor .)
-    RPAREN          reduce using rule 9 (term -> factor .)
+    LBRACE          shift and go to state 15
 
 
 state 13
 
-    (10) factor -> NUMBER .
+    (6) params -> params COMMA . INT ID
 
-    TIMES           reduce using rule 10 (factor -> NUMBER .)
-    DIVIDE          reduce using rule 10 (factor -> NUMBER .)
-    SEMICOLON       reduce using rule 10 (factor -> NUMBER .)
-    PLUS            reduce using rule 10 (factor -> NUMBER .)
-    MINUS           reduce using rule 10 (factor -> NUMBER .)
-    RPAREN          reduce using rule 10 (factor -> NUMBER .)
+    INT             shift and go to state 16
 
 
 state 14
 
-    (12) factor -> LPAREN . expression RPAREN
-    (6) expression -> . term
-    (13) expression -> . expression PLUS term
-    (14) expression -> . expression MINUS term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (5) function -> INT ID LPAREN RPAREN LBRACE . stmts RBRACE
+    (8) stmts -> . stmts stmt
+    (9) stmts -> . stmt
+    (10) stmt -> . INT ID EQUALS expr SEMICOLON
+    (11) stmt -> . ID EQUALS expr SEMICOLON
+    (12) stmt -> . RETURN expr SEMICOLON
+    (13) stmt -> . RETURN SEMICOLON
+    (14) stmt -> . PRINT LPAREN expr RPAREN SEMICOLON
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    INT             shift and go to state 17
+    ID              shift and go to state 18
+    RETURN          shift and go to state 21
+    PRINT           shift and go to state 22
 
-    expression                     shift and go to state 21
-    term                           shift and go to state 11
-    factor                         shift and go to state 12
+    stmts                          shift and go to state 19
+    stmt                           shift and go to state 20
 
 state 15
 
-    (5) statement -> PRINT LPAREN expression . RPAREN SEMICOLON
-    (13) expression -> expression . PLUS term
-    (14) expression -> expression . MINUS term
+    (4) function -> INT ID LPAREN params RPAREN LBRACE . stmts RBRACE
+    (8) stmts -> . stmts stmt
+    (9) stmts -> . stmt
+    (10) stmt -> . INT ID EQUALS expr SEMICOLON
+    (11) stmt -> . ID EQUALS expr SEMICOLON
+    (12) stmt -> . RETURN expr SEMICOLON
+    (13) stmt -> . RETURN SEMICOLON
+    (14) stmt -> . PRINT LPAREN expr RPAREN SEMICOLON
 
-    RPAREN          shift and go to state 22
-    PLUS            shift and go to state 17
-    MINUS           shift and go to state 18
+    INT             shift and go to state 17
+    ID              shift and go to state 18
+    RETURN          shift and go to state 21
+    PRINT           shift and go to state 22
 
+    stmts                          shift and go to state 23
+    stmt                           shift and go to state 20
 
 state 16
 
-    (4) statement -> ID EQUALS expression SEMICOLON .
+    (6) params -> params COMMA INT . ID
 
-    ID              reduce using rule 4 (statement -> ID EQUALS expression SEMICOLON .)
-    PRINT           reduce using rule 4 (statement -> ID EQUALS expression SEMICOLON .)
-    $end            reduce using rule 4 (statement -> ID EQUALS expression SEMICOLON .)
+    ID              shift and go to state 24
 
 
 state 17
 
-    (13) expression -> expression PLUS . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (10) stmt -> INT . ID EQUALS expr SEMICOLON
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    ID              shift and go to state 25
 
-    term                           shift and go to state 23
-    factor                         shift and go to state 12
 
 state 18
 
-    (14) expression -> expression MINUS . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (11) stmt -> ID . EQUALS expr SEMICOLON
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    EQUALS          shift and go to state 26
 
-    term                           shift and go to state 24
-    factor                         shift and go to state 12
 
 state 19
 
-    (7) term -> term TIMES . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (5) function -> INT ID LPAREN RPAREN LBRACE stmts . RBRACE
+    (8) stmts -> stmts . stmt
+    (10) stmt -> . INT ID EQUALS expr SEMICOLON
+    (11) stmt -> . ID EQUALS expr SEMICOLON
+    (12) stmt -> . RETURN expr SEMICOLON
+    (13) stmt -> . RETURN SEMICOLON
+    (14) stmt -> . PRINT LPAREN expr RPAREN SEMICOLON
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    RBRACE          shift and go to state 27
+    INT             shift and go to state 17
+    ID              shift and go to state 18
+    RETURN          shift and go to state 21
+    PRINT           shift and go to state 22
 
-    factor                         shift and go to state 25
+    stmt                           shift and go to state 28
 
 state 20
 
-    (8) term -> term DIVIDE . factor
-    (10) factor -> . NUMBER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (9) stmts -> stmt .
 
-    NUMBER          shift and go to state 13
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 14
+    RBRACE          reduce using rule 9 (stmts -> stmt .)
+    INT             reduce using rule 9 (stmts -> stmt .)
+    ID              reduce using rule 9 (stmts -> stmt .)
+    RETURN          reduce using rule 9 (stmts -> stmt .)
+    PRINT           reduce using rule 9 (stmts -> stmt .)
 
-    factor                         shift and go to state 26
 
 state 21
 
-    (12) factor -> LPAREN expression . RPAREN
-    (13) expression -> expression . PLUS term
-    (14) expression -> expression . MINUS term
+    (12) stmt -> RETURN . expr SEMICOLON
+    (13) stmt -> RETURN . SEMICOLON
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
 
-    RPAREN          shift and go to state 27
-    PLUS            shift and go to state 17
-    MINUS           shift and go to state 18
+    SEMICOLON       shift and go to state 30
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
 
+    expr                           shift and go to state 29
 
 state 22
 
-    (5) statement -> PRINT LPAREN expression RPAREN . SEMICOLON
+    (14) stmt -> PRINT . LPAREN expr RPAREN SEMICOLON
 
-    SEMICOLON       shift and go to state 28
+    LPAREN          shift and go to state 34
 
 
 state 23
 
-    (13) expression -> expression PLUS term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (4) function -> INT ID LPAREN params RPAREN LBRACE stmts . RBRACE
+    (8) stmts -> stmts . stmt
+    (10) stmt -> . INT ID EQUALS expr SEMICOLON
+    (11) stmt -> . ID EQUALS expr SEMICOLON
+    (12) stmt -> . RETURN expr SEMICOLON
+    (13) stmt -> . RETURN SEMICOLON
+    (14) stmt -> . PRINT LPAREN expr RPAREN SEMICOLON
 
-    SEMICOLON       reduce using rule 13 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 13 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 13 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 13 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 19
-    DIVIDE          shift and go to state 20
+    RBRACE          shift and go to state 35
+    INT             shift and go to state 17
+    ID              shift and go to state 18
+    RETURN          shift and go to state 21
+    PRINT           shift and go to state 22
 
+    stmt                           shift and go to state 28
 
 state 24
 
-    (14) expression -> expression MINUS term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (6) params -> params COMMA INT ID .
 
-    SEMICOLON       reduce using rule 14 (expression -> expression MINUS term .)
-    PLUS            reduce using rule 14 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 14 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 14 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 19
-    DIVIDE          shift and go to state 20
+    RPAREN          reduce using rule 6 (params -> params COMMA INT ID .)
+    COMMA           reduce using rule 6 (params -> params COMMA INT ID .)
 
 
 state 25
 
-    (7) term -> term TIMES factor .
+    (10) stmt -> INT ID . EQUALS expr SEMICOLON
 
-    TIMES           reduce using rule 7 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 7 (term -> term TIMES factor .)
-    SEMICOLON       reduce using rule 7 (term -> term TIMES factor .)
-    PLUS            reduce using rule 7 (term -> term TIMES factor .)
-    MINUS           reduce using rule 7 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 7 (term -> term TIMES factor .)
+    EQUALS          shift and go to state 36
 
 
 state 26
 
-    (8) term -> term DIVIDE factor .
+    (11) stmt -> ID EQUALS . expr SEMICOLON
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
 
-    TIMES           reduce using rule 8 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 8 (term -> term DIVIDE factor .)
-    SEMICOLON       reduce using rule 8 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 8 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 8 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 8 (term -> term DIVIDE factor .)
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
 
+    expr                           shift and go to state 37
 
 state 27
 
-    (12) factor -> LPAREN expression RPAREN .
+    (5) function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE .
 
-    TIMES           reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    SEMICOLON       reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 12 (factor -> LPAREN expression RPAREN .)
+    INT             reduce using rule 5 (function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE .)
+    $end            reduce using rule 5 (function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE .)
 
 
 state 28
 
-    (5) statement -> PRINT LPAREN expression RPAREN SEMICOLON .
+    (8) stmts -> stmts stmt .
 
-    ID              reduce using rule 5 (statement -> PRINT LPAREN expression RPAREN SEMICOLON .)
-    PRINT           reduce using rule 5 (statement -> PRINT LPAREN expression RPAREN SEMICOLON .)
-    $end            reduce using rule 5 (statement -> PRINT LPAREN expression RPAREN SEMICOLON .)
+    RBRACE          reduce using rule 8 (stmts -> stmts stmt .)
+    INT             reduce using rule 8 (stmts -> stmts stmt .)
+    ID              reduce using rule 8 (stmts -> stmts stmt .)
+    RETURN          reduce using rule 8 (stmts -> stmts stmt .)
+    PRINT           reduce using rule 8 (stmts -> stmts stmt .)
+
+
+state 29
+
+    (12) stmt -> RETURN expr . SEMICOLON
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 30
+
+    (13) stmt -> RETURN SEMICOLON .
+
+    RBRACE          reduce using rule 13 (stmt -> RETURN SEMICOLON .)
+    INT             reduce using rule 13 (stmt -> RETURN SEMICOLON .)
+    ID              reduce using rule 13 (stmt -> RETURN SEMICOLON .)
+    RETURN          reduce using rule 13 (stmt -> RETURN SEMICOLON .)
+    PRINT           reduce using rule 13 (stmt -> RETURN SEMICOLON .)
+
+
+state 31
+
+    (19) expr -> NUMBER .
+
+    SEMICOLON       reduce using rule 19 (expr -> NUMBER .)
+    PLUS            reduce using rule 19 (expr -> NUMBER .)
+    MINUS           reduce using rule 19 (expr -> NUMBER .)
+    TIMES           reduce using rule 19 (expr -> NUMBER .)
+    DIVIDE          reduce using rule 19 (expr -> NUMBER .)
+    RPAREN          reduce using rule 19 (expr -> NUMBER .)
+    COMMA           reduce using rule 19 (expr -> NUMBER .)
+
+
+state 32
+
+    (20) expr -> ID .
+    (21) expr -> ID . LPAREN args RPAREN
+    (22) expr -> ID . LPAREN RPAREN
+
+    SEMICOLON       reduce using rule 20 (expr -> ID .)
+    PLUS            reduce using rule 20 (expr -> ID .)
+    MINUS           reduce using rule 20 (expr -> ID .)
+    TIMES           reduce using rule 20 (expr -> ID .)
+    DIVIDE          reduce using rule 20 (expr -> ID .)
+    RPAREN          reduce using rule 20 (expr -> ID .)
+    COMMA           reduce using rule 20 (expr -> ID .)
+    LPAREN          shift and go to state 43
+
+
+state 33
+
+    (25) expr -> LPAREN . expr RPAREN
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 44
+
+state 34
+
+    (14) stmt -> PRINT LPAREN . expr RPAREN SEMICOLON
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 45
+
+state 35
+
+    (4) function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE .
+
+    INT             reduce using rule 4 (function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE .)
+    $end            reduce using rule 4 (function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE .)
+
+
+state 36
+
+    (10) stmt -> INT ID EQUALS . expr SEMICOLON
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 46
+
+state 37
+
+    (11) stmt -> ID EQUALS expr . SEMICOLON
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       shift and go to state 47
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 38
+
+    (12) stmt -> RETURN expr SEMICOLON .
+
+    RBRACE          reduce using rule 12 (stmt -> RETURN expr SEMICOLON .)
+    INT             reduce using rule 12 (stmt -> RETURN expr SEMICOLON .)
+    ID              reduce using rule 12 (stmt -> RETURN expr SEMICOLON .)
+    RETURN          reduce using rule 12 (stmt -> RETURN expr SEMICOLON .)
+    PRINT           reduce using rule 12 (stmt -> RETURN expr SEMICOLON .)
+
+
+state 39
+
+    (15) expr -> expr PLUS . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 48
+
+state 40
+
+    (16) expr -> expr MINUS . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 49
+
+state 41
+
+    (17) expr -> expr TIMES . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 50
+
+state 42
+
+    (18) expr -> expr DIVIDE . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 51
+
+state 43
+
+    (21) expr -> ID LPAREN . args RPAREN
+    (22) expr -> ID LPAREN . RPAREN
+    (23) args -> . args COMMA expr
+    (24) args -> . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    RPAREN          shift and go to state 53
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    args                           shift and go to state 52
+    expr                           shift and go to state 54
+
+state 44
+
+    (25) expr -> LPAREN expr . RPAREN
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    RPAREN          shift and go to state 55
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 45
+
+    (14) stmt -> PRINT LPAREN expr . RPAREN SEMICOLON
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    RPAREN          shift and go to state 56
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 46
+
+    (10) stmt -> INT ID EQUALS expr . SEMICOLON
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       shift and go to state 57
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 47
+
+    (11) stmt -> ID EQUALS expr SEMICOLON .
+
+    RBRACE          reduce using rule 11 (stmt -> ID EQUALS expr SEMICOLON .)
+    INT             reduce using rule 11 (stmt -> ID EQUALS expr SEMICOLON .)
+    ID              reduce using rule 11 (stmt -> ID EQUALS expr SEMICOLON .)
+    RETURN          reduce using rule 11 (stmt -> ID EQUALS expr SEMICOLON .)
+    PRINT           reduce using rule 11 (stmt -> ID EQUALS expr SEMICOLON .)
+
+
+state 48
+
+    (15) expr -> expr PLUS expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       reduce using rule 15 (expr -> expr PLUS expr .)
+    PLUS            reduce using rule 15 (expr -> expr PLUS expr .)
+    MINUS           reduce using rule 15 (expr -> expr PLUS expr .)
+    RPAREN          reduce using rule 15 (expr -> expr PLUS expr .)
+    COMMA           reduce using rule 15 (expr -> expr PLUS expr .)
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+  ! TIMES           [ reduce using rule 15 (expr -> expr PLUS expr .) ]
+  ! DIVIDE          [ reduce using rule 15 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 39 ]
+  ! MINUS           [ shift and go to state 40 ]
+
+
+state 49
+
+    (16) expr -> expr MINUS expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       reduce using rule 16 (expr -> expr MINUS expr .)
+    PLUS            reduce using rule 16 (expr -> expr MINUS expr .)
+    MINUS           reduce using rule 16 (expr -> expr MINUS expr .)
+    RPAREN          reduce using rule 16 (expr -> expr MINUS expr .)
+    COMMA           reduce using rule 16 (expr -> expr MINUS expr .)
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+  ! TIMES           [ reduce using rule 16 (expr -> expr MINUS expr .) ]
+  ! DIVIDE          [ reduce using rule 16 (expr -> expr MINUS expr .) ]
+  ! PLUS            [ shift and go to state 39 ]
+  ! MINUS           [ shift and go to state 40 ]
+
+
+state 50
+
+    (17) expr -> expr TIMES expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       reduce using rule 17 (expr -> expr TIMES expr .)
+    PLUS            reduce using rule 17 (expr -> expr TIMES expr .)
+    MINUS           reduce using rule 17 (expr -> expr TIMES expr .)
+    TIMES           reduce using rule 17 (expr -> expr TIMES expr .)
+    DIVIDE          reduce using rule 17 (expr -> expr TIMES expr .)
+    RPAREN          reduce using rule 17 (expr -> expr TIMES expr .)
+    COMMA           reduce using rule 17 (expr -> expr TIMES expr .)
+
+  ! PLUS            [ shift and go to state 39 ]
+  ! MINUS           [ shift and go to state 40 ]
+  ! TIMES           [ shift and go to state 41 ]
+  ! DIVIDE          [ shift and go to state 42 ]
+
+
+state 51
+
+    (18) expr -> expr DIVIDE expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    SEMICOLON       reduce using rule 18 (expr -> expr DIVIDE expr .)
+    PLUS            reduce using rule 18 (expr -> expr DIVIDE expr .)
+    MINUS           reduce using rule 18 (expr -> expr DIVIDE expr .)
+    TIMES           reduce using rule 18 (expr -> expr DIVIDE expr .)
+    DIVIDE          reduce using rule 18 (expr -> expr DIVIDE expr .)
+    RPAREN          reduce using rule 18 (expr -> expr DIVIDE expr .)
+    COMMA           reduce using rule 18 (expr -> expr DIVIDE expr .)
+
+  ! PLUS            [ shift and go to state 39 ]
+  ! MINUS           [ shift and go to state 40 ]
+  ! TIMES           [ shift and go to state 41 ]
+  ! DIVIDE          [ shift and go to state 42 ]
+
+
+state 52
+
+    (21) expr -> ID LPAREN args . RPAREN
+    (23) args -> args . COMMA expr
+
+    RPAREN          shift and go to state 58
+    COMMA           shift and go to state 59
+
+
+state 53
+
+    (22) expr -> ID LPAREN RPAREN .
+
+    SEMICOLON       reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    PLUS            reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    MINUS           reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    TIMES           reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    DIVIDE          reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    RPAREN          reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+    COMMA           reduce using rule 22 (expr -> ID LPAREN RPAREN .)
+
+
+state 54
+
+    (24) args -> expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    RPAREN          reduce using rule 24 (args -> expr .)
+    COMMA           reduce using rule 24 (args -> expr .)
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
+
+
+state 55
+
+    (25) expr -> LPAREN expr RPAREN .
+
+    SEMICOLON       reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    TIMES           reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+    COMMA           reduce using rule 25 (expr -> LPAREN expr RPAREN .)
+
+
+state 56
+
+    (14) stmt -> PRINT LPAREN expr RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 60
+
+
+state 57
+
+    (10) stmt -> INT ID EQUALS expr SEMICOLON .
+
+    RBRACE          reduce using rule 10 (stmt -> INT ID EQUALS expr SEMICOLON .)
+    INT             reduce using rule 10 (stmt -> INT ID EQUALS expr SEMICOLON .)
+    ID              reduce using rule 10 (stmt -> INT ID EQUALS expr SEMICOLON .)
+    RETURN          reduce using rule 10 (stmt -> INT ID EQUALS expr SEMICOLON .)
+    PRINT           reduce using rule 10 (stmt -> INT ID EQUALS expr SEMICOLON .)
+
+
+state 58
+
+    (21) expr -> ID LPAREN args RPAREN .
+
+    SEMICOLON       reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    PLUS            reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    MINUS           reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    TIMES           reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    DIVIDE          reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    RPAREN          reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+    COMMA           reduce using rule 21 (expr -> ID LPAREN args RPAREN .)
+
+
+state 59
+
+    (23) args -> args COMMA . expr
+    (15) expr -> . expr PLUS expr
+    (16) expr -> . expr MINUS expr
+    (17) expr -> . expr TIMES expr
+    (18) expr -> . expr DIVIDE expr
+    (19) expr -> . NUMBER
+    (20) expr -> . ID
+    (21) expr -> . ID LPAREN args RPAREN
+    (22) expr -> . ID LPAREN RPAREN
+    (25) expr -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 31
+    ID              shift and go to state 32
+    LPAREN          shift and go to state 33
+
+    expr                           shift and go to state 61
+
+state 60
+
+    (14) stmt -> PRINT LPAREN expr RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 14 (stmt -> PRINT LPAREN expr RPAREN SEMICOLON .)
+    INT             reduce using rule 14 (stmt -> PRINT LPAREN expr RPAREN SEMICOLON .)
+    ID              reduce using rule 14 (stmt -> PRINT LPAREN expr RPAREN SEMICOLON .)
+    RETURN          reduce using rule 14 (stmt -> PRINT LPAREN expr RPAREN SEMICOLON .)
+    PRINT           reduce using rule 14 (stmt -> PRINT LPAREN expr RPAREN SEMICOLON .)
+
+
+state 61
+
+    (23) args -> args COMMA expr .
+    (15) expr -> expr . PLUS expr
+    (16) expr -> expr . MINUS expr
+    (17) expr -> expr . TIMES expr
+    (18) expr -> expr . DIVIDE expr
+
+    RPAREN          reduce using rule 23 (args -> args COMMA expr .)
+    COMMA           reduce using rule 23 (args -> args COMMA expr .)
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    TIMES           shift and go to state 41
+    DIVIDE          shift and go to state 42
 

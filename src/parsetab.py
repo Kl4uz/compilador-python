@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSCOMMA DIVIDE ELSE EQUALS ID IF INT LBRACE LPAREN MINUS NUMBER PLUS PRINT PRINT RBRACE RETURN RPAREN SEMICOLON TIMES WHILEprogram : statement_liststatement_list : statement_list statement\n                      | statementstatement : ID EQUALS expression SEMICOLONstatement : PRINT LPAREN expression RPAREN SEMICOLONexpression : termterm : term TIMES factor\n            | term DIVIDE factorterm : factorfactor : NUMBERfactor : IDfactor : LPAREN expression RPARENexpression : expression PLUS term\n                  | expression MINUS term'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSCOMMA DIVIDE ELSE EQUALS ID IF INT LBRACE LPAREN MINUS NUMBER PLUS PRINT PRINT RBRACE RETURN RPAREN SEMICOLON TIMES WHILEprogram : func_listfunc_list : func_list function\n                 | functionfunction : INT ID LPAREN params RPAREN LBRACE stmts RBRACE\n                | INT ID LPAREN RPAREN LBRACE stmts RBRACEparams : params COMMA INT ID\n              | INT IDstmts : stmts stmt\n             | stmtstmt : INT ID EQUALS expr SEMICOLONstmt : ID EQUALS expr SEMICOLONstmt : RETURN expr SEMICOLON\n            | RETURN SEMICOLONstmt : PRINT LPAREN expr RPAREN SEMICOLONexpr : expr PLUS expr\n            | expr MINUS expr\n            | expr TIMES expr\n            | expr DIVIDE exprexpr : NUMBERexpr : IDexpr : ID LPAREN args RPAREN\n            | ID LPAREN RPARENargs : args COMMA expr\n            | exprexpr : LPAREN expr RPAREN'
     
-_lr_action_items = {'ID':([0,2,3,6,7,8,14,16,17,18,19,20,28,],[4,4,-3,-2,9,9,9,-4,9,9,9,9,-5,]),'PRINT':([0,2,3,6,16,28,],[5,5,-3,-2,-4,-5,]),'$end':([1,2,3,6,16,28,],[0,-1,-3,-2,-4,-5,]),'EQUALS':([4,],[7,]),'LPAREN':([5,7,8,14,17,18,19,20,],[8,14,14,14,14,14,14,14,]),'NUMBER':([7,8,14,17,18,19,20,],[13,13,13,13,13,13,13,]),'TIMES':([9,11,12,13,23,24,25,26,27,],[-11,19,-9,-10,19,19,-7,-8,-12,]),'DIVIDE':([9,11,12,13,23,24,25,26,27,],[-11,20,-9,-10,20,20,-7,-8,-12,]),'SEMICOLON':([9,10,11,12,13,22,23,24,25,26,27,],[-11,16,-6,-9,-10,28,-13,-14,-7,-8,-12,]),'PLUS':([9,10,11,12,13,15,21,23,24,25,26,27,],[-11,17,-6,-9,-10,17,17,-13,-14,-7,-8,-12,]),'MINUS':([9,10,11,12,13,15,21,23,24,25,26,27,],[-11,18,-6,-9,-10,18,18,-13,-14,-7,-8,-12,]),'RPAREN':([9,11,12,13,15,21,23,24,25,26,27,],[-11,-6,-9,-10,22,27,-13,-14,-7,-8,-12,]),}
+_lr_action_items = {'INT':([0,2,3,5,7,13,14,15,19,20,23,27,28,30,35,38,47,57,60,],[4,4,-3,-2,8,16,17,17,17,-9,17,-5,-8,-13,-4,-12,-11,-10,-14,]),'$end':([1,2,3,5,27,35,],[0,-1,-3,-2,-5,-4,]),'ID':([4,8,14,15,16,17,19,20,21,23,26,28,30,33,34,36,38,39,40,41,42,43,47,57,59,60,],[6,11,18,18,24,25,18,-9,32,18,32,-8,-13,32,32,32,-12,32,32,32,32,32,-11,-10,32,-14,]),'LPAREN':([6,21,22,26,32,33,34,36,39,40,41,42,43,59,],[7,33,34,33,43,33,33,33,33,33,33,33,33,33,]),'RPAREN':([7,9,11,24,31,32,43,44,45,48,49,50,51,52,53,54,55,58,61,],[10,12,-7,-6,-19,-20,53,55,56,-15,-16,-17,-18,58,-22,-24,-25,-21,-23,]),'COMMA':([9,11,24,31,32,48,49,50,51,52,53,54,55,58,61,],[13,-7,-6,-19,-20,-15,-16,-17,-18,59,-22,-24,-25,-21,-23,]),'LBRACE':([10,12,],[14,15,]),'RETURN':([14,15,19,20,23,28,30,38,47,57,60,],[21,21,21,-9,21,-8,-13,-12,-11,-10,-14,]),'PRINT':([14,15,19,20,23,28,30,38,47,57,60,],[22,22,22,-9,22,-8,-13,-12,-11,-10,-14,]),'EQUALS':([18,25,],[26,36,]),'RBRACE':([19,20,23,28,30,38,47,57,60,],[27,-9,35,-8,-13,-12,-11,-10,-14,]),'SEMICOLON':([21,29,31,32,37,46,48,49,50,51,53,55,56,58,],[30,38,-19,-20,47,57,-15,-16,-17,-18,-22,-25,60,-21,]),'NUMBER':([21,26,33,34,36,39,40,41,42,43,59,],[31,31,31,31,31,31,31,31,31,31,31,]),'PLUS':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[39,-19,-20,39,39,39,39,-15,-16,-17,-18,-22,39,-25,-21,39,]),'MINUS':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[40,-19,-20,40,40,40,40,-15,-16,-17,-18,-22,40,-25,-21,40,]),'TIMES':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[41,-19,-20,41,41,41,41,41,41,-17,-18,-22,41,-25,-21,41,]),'DIVIDE':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[42,-19,-20,42,42,42,42,42,42,-17,-18,-22,42,-25,-21,42,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,6,]),'expression':([7,8,14,],[10,15,21,]),'term':([7,8,14,17,18,],[11,11,11,23,24,]),'factor':([7,8,14,17,18,19,20,],[12,12,12,12,12,25,26,]),}
+_lr_goto_items = {'program':([0,],[1,]),'func_list':([0,],[2,]),'function':([0,2,],[3,5,]),'params':([7,],[9,]),'stmts':([14,15,],[19,23,]),'stmt':([14,15,19,23,],[20,20,28,28,]),'expr':([21,26,33,34,36,39,40,41,42,43,59,],[29,37,44,45,46,48,49,50,51,54,61,]),'args':([43,],[52,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,29 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement_list','program',1,'p_program','codegen.py',83),
-  ('statement_list -> statement_list statement','statement_list',2,'p_stmt_list','codegen.py',87),
-  ('statement_list -> statement','statement_list',1,'p_stmt_list','codegen.py',88),
-  ('statement -> ID EQUALS expression SEMICOLON','statement',4,'p_stmt_assign','codegen.py',95),
-  ('statement -> PRINT LPAREN expression RPAREN SEMICOLON','statement',5,'p_stmt_print','codegen.py',103),
-  ('expression -> term','expression',1,'p_expr_term','codegen.py',109),
-  ('term -> term TIMES factor','term',3,'p_term_muldiv','codegen.py',113),
-  ('term -> term DIVIDE factor','term',3,'p_term_muldiv','codegen.py',114),
-  ('term -> factor','term',1,'p_term_factor','codegen.py',121),
-  ('factor -> NUMBER','factor',1,'p_factor_num','codegen.py',125),
-  ('factor -> ID','factor',1,'p_factor_id','codegen.py',129),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','codegen.py',137),
-  ('expression -> expression PLUS term','expression',3,'p_expr_addsub','codegen.py',141),
-  ('expression -> expression MINUS term','expression',3,'p_expr_addsub','codegen.py',142),
+  ('program -> func_list','program',1,'p_program','compiler_etapa7.py',32),
+  ('func_list -> func_list function','func_list',2,'p_func_list','compiler_etapa7.py',36),
+  ('func_list -> function','func_list',1,'p_func_list','compiler_etapa7.py',37),
+  ('function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE','function',8,'p_function','compiler_etapa7.py',44),
+  ('function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE','function',7,'p_function','compiler_etapa7.py',45),
+  ('params -> params COMMA INT ID','params',4,'p_params','compiler_etapa7.py',52),
+  ('params -> INT ID','params',2,'p_params','compiler_etapa7.py',53),
+  ('stmts -> stmts stmt','stmts',2,'p_stmts','compiler_etapa7.py',60),
+  ('stmts -> stmt','stmts',1,'p_stmts','compiler_etapa7.py',61),
+  ('stmt -> INT ID EQUALS expr SEMICOLON','stmt',5,'p_stmt_decl_assign','compiler_etapa7.py',68),
+  ('stmt -> ID EQUALS expr SEMICOLON','stmt',4,'p_stmt_assign','compiler_etapa7.py',72),
+  ('stmt -> RETURN expr SEMICOLON','stmt',3,'p_stmt_return','compiler_etapa7.py',76),
+  ('stmt -> RETURN SEMICOLON','stmt',2,'p_stmt_return','compiler_etapa7.py',77),
+  ('stmt -> PRINT LPAREN expr RPAREN SEMICOLON','stmt',5,'p_stmt_print','compiler_etapa7.py',84),
+  ('expr -> expr PLUS expr','expr',3,'p_expr_binop','compiler_etapa7.py',88),
+  ('expr -> expr MINUS expr','expr',3,'p_expr_binop','compiler_etapa7.py',89),
+  ('expr -> expr TIMES expr','expr',3,'p_expr_binop','compiler_etapa7.py',90),
+  ('expr -> expr DIVIDE expr','expr',3,'p_expr_binop','compiler_etapa7.py',91),
+  ('expr -> NUMBER','expr',1,'p_expr_num','compiler_etapa7.py',95),
+  ('expr -> ID','expr',1,'p_expr_id','compiler_etapa7.py',99),
+  ('expr -> ID LPAREN args RPAREN','expr',4,'p_expr_call','compiler_etapa7.py',103),
+  ('expr -> ID LPAREN RPAREN','expr',3,'p_expr_call','compiler_etapa7.py',104),
+  ('args -> args COMMA expr','args',3,'p_args','compiler_etapa7.py',111),
+  ('args -> expr','args',1,'p_args','compiler_etapa7.py',112),
+  ('expr -> LPAREN expr RPAREN','expr',3,'p_expr_paren','compiler_etapa7.py',119),
 ]

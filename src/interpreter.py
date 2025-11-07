@@ -3,7 +3,7 @@ Interpretador/Simulador de Execução
 Executa código TAC usando Runtime Stack e Activation Records
 Etapa 7 - Ambientes de Execução
 """
-
+from typing import Any
 from runtime import ActivationRecord, RuntimeStack
 
 class TACInterpreter:
@@ -14,7 +14,7 @@ class TACInterpreter:
         self.pc = 0  # Program Counter
         self.runtime = RuntimeStack()
         self.functions = {}  # Mapeia nome -> índice de início da função
-        self.return_value = None
+        self.return_value: int | float | None = None
         
         # Indexa as funções
         self._index_functions()
