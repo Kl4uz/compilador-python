@@ -84,7 +84,7 @@ class TACInterpreter:
                 parts = instr.split()
                 if len(parts) > 1:
                     return_val = self._get_value(parts[1])
-                    ar.return_value = return_val
+                    setattr(ar, "return_value", return_val)
                     self.return_value = return_val
                 break
             
