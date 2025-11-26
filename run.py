@@ -1,13 +1,26 @@
 """
-Compilador Interativo - Interface Principal
-Permite compilar expressões de três formas:
-1. Via arquivo
-2. Via entrada interativa
-3. Via argumento de linha de comando
+Compilador Interativo - Interface CLI Principal
+
+Modos de uso:
+1. Arquivo: python run.py arquivo.txt
+2. Interativo: python run.py (digita código)
+3. Direto: python run.py "int a = 5; int b = 10;"
+
+Características:
+- Auto-gera valores para variáveis não definidas (a=7, b=8, c=9, etc)
+- Mostra 3 estágios de TAC: Original → Algébrico → Otimizado
+- Suporta expressões simples ou código completo
 """
 
 import sys
 import os
+import io
+
+# ═══ FIX ENCODING WINDOWS ═══
+# Garante que UTF-8 funciona no PowerShell/CMD
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # Adiciona o diretório ao path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -17,8 +30,12 @@ from compiler import compile
 
 def compilar_expressao(expressao):
     """
-    Compila uma expressão simples ou instrução
-    Automaticamente envolve em uma função main() se necessário
+    Prepara expressão/código para compilação
+    
+    Transforma entrada flexível em código válido:
+    - "a + b * 2" → vira função main() completa
+    - "int x = 5;" → adiciona declarações de vars usadas
+    - código completo → passa direto
     """
     expressao = expressao.strip()
     
@@ -54,7 +71,8 @@ int main() {{
             # Remove palavras reservadas e números
             variaveis = [v for v in variaveis if v not in ['int', 'return', 'print', 'if', 'else', 'while']]
             
-            # Cria declarações para variáveis não declaradas
+            # Auto-gera valores para variáveis não declaradas
+            # Fórmula: ord('a') % 10 = 7, ord('b') % 10 = 8, etc
             declaracoes = '\n    '.join([f'int {v} = {ord(v) % 10};' for v in set(variaveis)])
             
             codigo_completo = f"""
@@ -113,8 +131,15 @@ def mostrar_resultado(result, verbose=True):
         print("="*70)
         result['ir'].print_quadruples()
         
+        # Mostra TAC após simplificação algébrica (se disponível)
+        if result.get('algebraic_ir'):
+            print("\n" + "="*70)
+            print(" TAC APÓS SIMPLIFICAÇÃO ALGÉBRICA")
+            print("="*70)
+            result['algebraic_ir'].print_code()
+        
         print("\n" + "="*70)
-        print(" CÓDIGO INTERMEDIÁRIO OTIMIZADO")
+        print(" CÓDIGO INTERMEDIÁRIO OTIMIZADO (FINAL)")
         print("="*70)
         result['optimized_ir'].print_code()
         

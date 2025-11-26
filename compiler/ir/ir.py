@@ -14,7 +14,7 @@ class TAC:
     def __repr__(self):
         if self.op == 'assign':
             return f"{self.result} = {self.arg1}"
-        elif self.op in ('+', '-', '*', '/'):
+        elif self.op in ('+', '-', '*', '/', '<<'):
             return f"{self.result} = {self.arg1} {self.op} {self.arg2}"
         elif self.op == 'call':
             args_str = ', '.join(self.arg2) if self.arg2 else ''
@@ -86,24 +86,3 @@ class IRProgram:
     
     def __repr__(self):
         return f"IRProgram({len(self.instructions)} instructions)"
-
-
-# Para testes
-if __name__ == "__main__":
-    ir = IRProgram()
-    
-    # Simulando: int x = 5 + 3;
-    ir.emit('+', 5, 3, 't1')
-    ir.emit('assign', 't1', None, 'x')
-    
-    # Simulando: y = x * 2;
-    ir.emit('*', 'x', 2, 't2')
-    ir.emit('assign', 't2', None, 'y')
-    
-    # Simulando: print(y);
-    ir.emit('print', 'y')
-    
-    # Simulando: return y;
-    ir.emit('return', 'y')
-    
-    ir.print_code()

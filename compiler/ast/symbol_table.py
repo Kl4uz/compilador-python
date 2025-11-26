@@ -1,37 +1,23 @@
 """
-Tabela de Símbolos com suporte a Escopos Aninhados
-Gerencia declarações, tipos e escopos de variáveis e funções
+Tabela de Símbolos - Gerencia Escopos e Declarações
+Rastreia variáveis, funções e seus tipos em cada escopo
 """
 
-class Symbol:
-    """Representa um símbolo na tabela"""
-    def __init__(self, name, symbol_type, scope, offset=0, is_param=False, **extra):
-        self.name = name
-        self.type = symbol_type
-        self.scope = scope
-        self.offset = offset  # Offset no activation record
-        self.is_param = is_param
-        self.__dict__.update(extra)  # Para atributos extras como 'params'
-    
-    def __repr__(self):
-        return f"Symbol({self.name}, {self.type}, scope={self.scope}, offset={self.offset}, param={self.is_param})"
-
-
 class Scope:
-    """Representa um escopo (global ou local de função)"""
+    """Um escopo (global ou função local)"""
     def __init__(self, name, parent=None, level=0):
         self.name = name
         self.parent = parent
         self.level = level
-        self.symbols = {}  # nome -> dict com info do símbolo
-        self.offset_counter = 0  # Para calcular offsets das variáveis locais
+        self.symbols = {}
+        self.offset_counter = 0
     
     def insert(self, name, symbol_type, is_param=False, **extra):
-        """Insere um novo símbolo no escopo atual"""
+        """Adiciona símbolo ao escopo"""
         if name in self.symbols:
-            raise Exception(f"Erro: Símbolo '{name}' já declarado no escopo '{self.name}'")
+            raise Exception(f"Erro: '{name}' já declarado em '{self.name}'")
         
-        symbol_info = {
+        self.symbols[name] = {
             'name': name,
             'type': symbol_type,
             'scope': self.name,
@@ -39,106 +25,69 @@ class Scope:
             'is_param': is_param,
             **extra
         }
-        self.symbols[name] = symbol_info
         self.offset_counter += 1
-        return symbol_info
-    
-    def lookup_local(self, name):
-        """Busca um símbolo apenas no escopo atual"""
-        return self.symbols.get(name)
+        return self.symbols[name]
     
     def lookup(self, name):
-        """Busca um símbolo no escopo atual e nos pais (escopo léxico)"""
+        """Busca símbolo aqui ou nos escopos pais"""
         if name in self.symbols:
             return self.symbols[name]
-        elif self.parent:
+        if self.parent:
             return self.parent.lookup(name)
         return None
-    
-    def __repr__(self):
-        return f"Scope({self.name}, level={self.level}, symbols={len(self.symbols)})"
 
 
 class SymbolTable:
-    """Tabela de Símbolos com suporte a escopos aninhados"""
+    """Gerenciador de escopos aninhados (global → funções)"""
     def __init__(self):
-        self.global_scope = Scope("global", parent=None, level=0)
+        self.global_scope = Scope("global")
         self.current_scope = self.global_scope
         self.scopes_stack = [self.global_scope]
     
     def enter_scope(self, scope_name):
-        """Entra em um novo escopo (ex: ao entrar em uma função)"""
-        new_scope = Scope(scope_name, parent=self.current_scope, level=len(self.scopes_stack))
+        """Cria e entra em novo escopo (ex: função)"""
+        new_scope = Scope(scope_name, self.current_scope, len(self.scopes_stack))
         self.scopes_stack.append(new_scope)
         self.current_scope = new_scope
         return new_scope
     
     def exit_scope(self):
-        """Sai do escopo atual (ex: ao sair de uma função)"""
+        """Volta ao escopo anterior"""
         if len(self.scopes_stack) <= 1:
-            raise Exception("Erro: Tentativa de sair do escopo global")
-        
+            raise Exception("Erro: Não pode sair do escopo global")
         self.scopes_stack.pop()
         self.current_scope = self.scopes_stack[-1]
     
     def insert(self, name, symbol_type, is_param=False, **extra):
-        """Insere um símbolo no escopo atual"""
+        """Adiciona símbolo no escopo atual"""
         return self.current_scope.insert(name, symbol_type, is_param, **extra)
     
     def lookup(self, name, current_scope_only=False):
-        """Busca um símbolo no escopo atual e nos pais"""
+        """Busca símbolo: se current_scope_only=True busca apenas no escopo atual"""
         if current_scope_only:
-            return self.current_scope.lookup_local(name)
+            return self.current_scope.symbols.get(name)
         return self.current_scope.lookup(name)
     
-    def lookup_local(self, name):
-        """Busca um símbolo apenas no escopo atual"""
-        return self.current_scope.lookup_local(name)
-    
-    def get_current_scope_name(self):
-        """Retorna o nome do escopo atual"""
-        return self.current_scope.name
-    
     def is_global_scope(self):
-        """Verifica se está no escopo global"""
+        """Verifica se está no global"""
         return self.current_scope == self.global_scope
     
     def print_table(self):
-        """Imprime toda a tabela de símbolos"""
+        """Exibe todos os escopos e símbolos"""
         print("\n=== TABELA DE SÍMBOLOS ===")
         for scope in self.scopes_stack:
             print(f"\nEscopo: {scope.name} (Nível: {scope.level})")
             if scope.symbols:
-                for name, symbol in scope.symbols.items():
-                    param_str = " [PARAM]" if symbol.get('is_param') else ""
-                    func_str = f" params={len(symbol.get('params', []))}" if symbol['type'] == 'function' else ""
-                    print(f"  {name}: {symbol['type']} (offset={symbol['offset']}){param_str}{func_str}")
+                for name, sym in scope.symbols.items():
+                    tipo = sym['type']
+                    offset = sym['offset']
+                    extras = []
+                    if sym.get('is_param'):
+                        extras.append("[PARAM]")
+                    if tipo == 'function':
+                        extras.append(f"params={len(sym.get('params', []))}")
+                    extras_str = " ".join(extras)
+                    print(f"  {name}: {tipo} (offset={offset}) {extras_str}".strip())
             else:
                 print("  (vazio)")
         print("========================\n")
-
-
-# Testes
-if __name__ == "__main__":
-    st = SymbolTable()
-    
-    # Variáveis globais
-    st.insert("global_var", "int")
-    
-    # Entrando na função soma
-    st.enter_scope("soma")
-    st.insert("a", "int", is_param=True)
-    st.insert("b", "int", is_param=True)
-    st.insert("r", "int")
-    
-    # Testando lookup
-    print("Lookup 'a' na função soma:", st.lookup("a"))
-    print("Lookup 'global_var' na função soma:", st.lookup("global_var"))
-    
-    st.exit_scope()
-    
-    # Entrando na função main
-    st.enter_scope("main")
-    st.insert("x", "int")
-    
-    st.print_table()

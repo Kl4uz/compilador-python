@@ -14,7 +14,7 @@ Uso:
 import sys
 from .lexer import tokenize, lexer
 from .parser import parse_ll1, Token
-from .ast import build_ast, print_ast
+from .ast import build_ast
 from .ast import SemanticAnalyzer
 from .codegen import CodeGenerator
 
@@ -115,7 +115,6 @@ def compile(source_code, optimize=True, verbose=False):
         
         if verbose:
             print("✓ AST construída")
-            print_ast(ast)
         
         # ===== ETAPA 4: ANÁLISE SEMÂNTICA =====
         if verbose:
@@ -150,6 +149,7 @@ def compile(source_code, optimize=True, verbose=False):
         ir_program, optimized_ir, assembly = codegen.generate(ast)
         
         result['ir'] = ir_program
+        result['algebraic_ir'] = codegen.algebraic_ir  # TAC após simplificação algébrica
         result['optimized_ir'] = optimized_ir
         result['assembly'] = assembly
         result['success'] = True

@@ -1,27 +1,19 @@
 """
-Analisador Léxico - Fase 1 do Compilador
-Converte código fonte em tokens
+Analisador Léxico - Tokenização
+Converte código-fonte em stream de tokens usando PLY (Python Lex-Yacc)
+Primeira fase do compilador: texto → tokens
 """
 import ply.lex as lex
 
-# Lista de tokens 
+# Lista de tipos de tokens reconhecidos
 tokens = (
-    'ID',
-    'NUMBER',
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'EQUALS',
-    'LPAREN',
-    'RPAREN',
-    'LBRACE',
-    'RBRACE',
-    'SEMICOLON',
-    'COMMA',
+    'ID', 'NUMBER',                              # Identificadores e números
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALS',  # Operadores
+    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',     # Delimitadores
+    'SEMICOLON', 'COMMA',                        # Pontuação
 )
 
-# Palavras reservadas
+# Palavras reservadas da linguagem
 reserved = {
     'if': 'IF',
     'else': 'ELSE',
@@ -34,7 +26,11 @@ reserved = {
 # Adiciona palavras reservadas aos tokens
 tokens = tokens + tuple(reserved.values())
 
-# Regras de tokens simples
+# ═══════════════════════════════════════════════════════
+# REGRAS DE TOKENIZAÇÃO (Expressões Regulares)
+# ═══════════════════════════════════════════════════════
+
+# Tokens simples - padrões de 1 caractere
 t_PLUS      = r'\+'
 t_MINUS     = r'-'
 t_TIMES     = r'\*'
@@ -47,59 +43,34 @@ t_RBRACE    = r'\}'
 t_SEMICOLON = r';'
 t_COMMA     = r','
 
-# Regra para identificadores
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value, 'ID')
+    r'[a-zA-Z_][a-zA-Z0-9_]*'  # Identificadores e palavras reservadas
+    t.type = reserved.get(t.value, 'ID')  # Verifica se é palavra reservada
     return t
 
-# Regra para números
 def t_NUMBER(t):
-    r'\d+'
+    r'\d+'  # Números inteiros
     t.value = int(t.value)
     return t
 
-# Regra para contar linhas
 def t_newline(t):
-    r'\n+'
+    r'\n+'  # Rastreia quebras de linha para relatório de erros
     t.lexer.lineno += len(t.value)
 
-# Caracteres ignorados
+# Ignora espaços e tabs
 t_ignore = ' \t'
 
-# Tratamento de erros
 def t_error(t):
+    """Trata caracteres ilegais"""
     print(f"[ERRO LÉXICO] Caractere ilegal '{t.value[0]}' na linha {t.lineno}")
     t.lexer.skip(1)
 
-# Constrói o lexer
+# Cria lexer (força recriação a cada import)
 lexer = lex.lex()
 
 def tokenize(source_code):
-    """
-    Função principal que tokeniza o código fonte
-    Retorna lista de tokens para o parser
-    """
-    lexer.input(source_code)
-    tokens_list = []
-    
-    for tok in lexer:
-        tokens_list.append(tok)
-    
-    return tokens_list
-
-# Para testes
-if __name__ == "__main__":
-    test_code = """
-    int x = 10 + 20;
-    print(x);
-    """
-    
-    print("=== TESTE DO LEXER ===")
-    print("Código:")
-    print(test_code)
-    print("\nTokens:")
-    
-    tokens = tokenize(test_code)
-    for tok in tokens:
-        print(f"{tok.type:12} {tok.value}")
+    """Tokeniza código fonte e retorna lista de tokens"""
+    # Recria lexer para evitar problemas de cache
+    local_lexer = lex.lex()
+    local_lexer.input(source_code)
+    return list(local_lexer)
