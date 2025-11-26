@@ -1,6 +1,13 @@
-import ply.lex as lex
+"""
+Analisador Léxico
+Tokeniza o código fonte em tokens
+"""
 
-#Lista de tokens 
+import ply.lex as lex
+from typing import List, Any
+
+
+# Lista de tokens
 tokens = (
     'ID',
     'NUMBER',
@@ -15,11 +22,9 @@ tokens = (
     'RBRACE',
     'SEMICOLON',
     'COMMA',
-    'PRINT'
 )
 
-# lista de palavras reservadas
-
+# Lista de palavras reservadas
 reserved = {
     'if': 'IF',
     'else': 'ELSE',
@@ -32,41 +37,60 @@ reserved = {
 # Adiciona as palavras reservadas aos tokens
 tokens = tokens + tuple(reserved.values())
 
-t_PLUS    = r'\+'
-t_MINUS   = r'-'
-t_TIMES   = r'\*'
-t_DIVIDE  = r'/'
-t_EQUALS  = r'='
-t_LPAREN  = r'\('
-t_RPAREN  = r'\)'
-t_LBRACE  = r'\{'
-t_RBRACE  = r'\}'
+# Definições de tokens simples (regex)
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+t_EQUALS = r'='
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 t_SEMICOLON = r';'
 t_COMMA = r','
 
-# um identificador é uma letra seguida de letras, dígitos ou underscores
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value, 'ID')    # Check for reserved words
+    t.type = reserved.get(t.value, 'ID')  # Verifica se é palavra reservada
     return t
+
 
 def t_NUMBER(t):
     r'\d+'
-    t.value = int(t.value)    
-    return t                
+    t.value = int(t.value)
+    return t
 
-# Define uma regra para contar linhas
+
 def t_newline(t):
     r'\n+'
-    t.lexer.lineno += len(t.value) 
+    t.lexer.lineno += len(t.value)
 
-# uma string de caracteres a serem ignorados (espaços e tabs)
-t_ignore  = ' \t'
 
-# Erro de caractere
+# Caracteres a serem ignorados (espaços e tabs)
+t_ignore = ' \t'
+
+
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
+    """Tratamento de erros léxicos"""
+    print(f"Erro léxico: caractere ilegal '{t.value[0]}' na linha {t.lineno}")
     t.lexer.skip(1)
+
 
 # Construção do analisador léxico
 lexer = lex.lex()
+
+
+def tokenize(source_code: str) -> List[Any]:
+    """
+    Tokeniza o código fonte
+    
+    Args:
+        source_code: Código fonte a ser tokenizado
+    
+    Returns:
+        Lista de tokens
+    """
+    lexer.input(source_code)
+    return list(lexer)

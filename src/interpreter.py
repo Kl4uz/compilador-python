@@ -4,7 +4,7 @@ Executa código TAC usando Runtime Stack e Activation Records
 Etapa 7 - Ambientes de Execução
 """
 from typing import Any
-from runtime import ActivationRecord, RuntimeStack
+from .runtime import ActivationRecord, RuntimeStack
 
 class TACInterpreter:
     """Interpretador para código TAC (Three Address Code)"""

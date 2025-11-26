@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSCOMMA DIVIDE ELSE EQUALS ID IF INT LBRACE LPAREN MINUS NUMBER PLUS PRINT PRINT RBRACE RETURN RPAREN SEMICOLON TIMES WHILEprogram : func_listfunc_list : func_list function\n                 | functionfunction : INT ID LPAREN params RPAREN LBRACE stmts RBRACE\n                | INT ID LPAREN RPAREN LBRACE stmts RBRACEparams : params COMMA INT ID\n              | INT IDstmts : stmts stmt\n             | stmtstmt : INT ID EQUALS expr SEMICOLONstmt : ID EQUALS expr SEMICOLONstmt : RETURN expr SEMICOLON\n            | RETURN SEMICOLONstmt : PRINT LPAREN expr RPAREN SEMICOLONexpr : expr PLUS expr\n            | expr MINUS expr\n            | expr TIMES expr\n            | expr DIVIDE exprexpr : NUMBERexpr : IDexpr : ID LPAREN args RPAREN\n            | ID LPAREN RPARENargs : args COMMA expr\n            | exprexpr : LPAREN expr RPAREN'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEQUALSCOMMA DIVIDE ELSE EQUALS ID IF INT LBRACE LPAREN MINUS NUMBER PLUS PRINT RBRACE RETURN RPAREN SEMICOLON TIMES WHILEprogram : declaration_listdeclaration_list : declaration_list declaration\n                        | declarationdeclaration : function_declaration\n                   | statementfunction_declaration : INT ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE\n                            | INT ID LPAREN RPAREN LBRACE statement_list RBRACEparameter_list : parameter_list COMMA parameter\n                      | parameterparameter : INT IDstatement_list : statement_list statement\n                      | statementstatement : INT ID SEMICOLON\n                 | INT ID EQUALS expression SEMICOLONstatement : ID EQUALS expression SEMICOLONstatement : RETURN expression SEMICOLON\n                 | RETURN SEMICOLONstatement : PRINT LPAREN expression RPAREN SEMICOLONexpression : termterm : term TIMES factor\n            | term DIVIDE factorterm : factorfactor : NUMBERfactor : IDfactor : ID LPAREN argument_list RPAREN\n              | ID LPAREN RPARENargument_list : argument_list COMMA expression\n                     | expressionfactor : LPAREN expression RPARENexpression : expression PLUS term\n                  | expression MINUS term'
     
-_lr_action_items = {'INT':([0,2,3,5,7,13,14,15,19,20,23,27,28,30,35,38,47,57,60,],[4,4,-3,-2,8,16,17,17,17,-9,17,-5,-8,-13,-4,-12,-11,-10,-14,]),'$end':([1,2,3,5,27,35,],[0,-1,-3,-2,-5,-4,]),'ID':([4,8,14,15,16,17,19,20,21,23,26,28,30,33,34,36,38,39,40,41,42,43,47,57,59,60,],[6,11,18,18,24,25,18,-9,32,18,32,-8,-13,32,32,32,-12,32,32,32,32,32,-11,-10,32,-14,]),'LPAREN':([6,21,22,26,32,33,34,36,39,40,41,42,43,59,],[7,33,34,33,43,33,33,33,33,33,33,33,33,33,]),'RPAREN':([7,9,11,24,31,32,43,44,45,48,49,50,51,52,53,54,55,58,61,],[10,12,-7,-6,-19,-20,53,55,56,-15,-16,-17,-18,58,-22,-24,-25,-21,-23,]),'COMMA':([9,11,24,31,32,48,49,50,51,52,53,54,55,58,61,],[13,-7,-6,-19,-20,-15,-16,-17,-18,59,-22,-24,-25,-21,-23,]),'LBRACE':([10,12,],[14,15,]),'RETURN':([14,15,19,20,23,28,30,38,47,57,60,],[21,21,21,-9,21,-8,-13,-12,-11,-10,-14,]),'PRINT':([14,15,19,20,23,28,30,38,47,57,60,],[22,22,22,-9,22,-8,-13,-12,-11,-10,-14,]),'EQUALS':([18,25,],[26,36,]),'RBRACE':([19,20,23,28,30,38,47,57,60,],[27,-9,35,-8,-13,-12,-11,-10,-14,]),'SEMICOLON':([21,29,31,32,37,46,48,49,50,51,53,55,56,58,],[30,38,-19,-20,47,57,-15,-16,-17,-18,-22,-25,60,-21,]),'NUMBER':([21,26,33,34,36,39,40,41,42,43,59,],[31,31,31,31,31,31,31,31,31,31,31,]),'PLUS':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[39,-19,-20,39,39,39,39,-15,-16,-17,-18,-22,39,-25,-21,39,]),'MINUS':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[40,-19,-20,40,40,40,40,-15,-16,-17,-18,-22,40,-25,-21,40,]),'TIMES':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[41,-19,-20,41,41,41,41,41,41,-17,-18,-22,41,-25,-21,41,]),'DIVIDE':([29,31,32,37,44,45,46,48,49,50,51,53,54,55,58,61,],[42,-19,-20,42,42,42,42,42,42,-17,-18,-22,42,-25,-21,42,]),}
+_lr_action_items = {'INT':([0,2,3,4,5,10,14,21,22,25,38,50,51,52,55,56,59,60,62,64,65,66,],[6,6,-3,-4,-5,-2,-17,33,-13,-16,-15,33,58,-14,-18,58,58,-12,58,-7,-11,-6,]),'ID':([0,2,3,4,5,6,8,10,12,14,19,20,22,23,25,26,27,28,29,30,33,38,51,52,54,55,56,58,59,60,62,64,65,66,],[7,7,-3,-4,-5,11,18,-2,18,-17,18,18,-13,18,-16,18,18,18,18,18,48,-15,7,-14,18,-18,7,63,7,-12,7,-7,-11,-6,]),'RETURN':([0,2,3,4,5,10,14,22,25,38,51,52,55,56,59,60,62,64,65,66,],[8,8,-3,-4,-5,-2,-17,-13,-16,-15,8,-14,-18,8,8,-12,8,-7,-11,-6,]),'PRINT':([0,2,3,4,5,10,14,22,25,38,51,52,55,56,59,60,62,64,65,66,],[9,9,-3,-4,-5,-2,-17,-13,-16,-15,9,-14,-18,9,9,-12,9,-7,-11,-6,]),'$end':([1,2,3,4,5,10,14,22,25,38,52,55,64,66,],[0,-1,-3,-4,-5,-2,-17,-13,-16,-15,-14,-18,-7,-6,]),'EQUALS':([7,11,63,],[12,23,23,]),'SEMICOLON':([8,11,13,15,16,17,18,24,37,39,40,41,42,44,46,47,53,63,],[14,22,25,-19,-22,-23,-24,38,52,-30,-31,-20,-21,-26,-29,55,-25,22,]),'NUMBER':([8,12,19,20,23,26,27,28,29,30,54,],[17,17,17,17,17,17,17,17,17,17,17,]),'LPAREN':([8,9,11,12,18,19,20,23,26,27,28,29,30,54,],[19,20,21,19,30,19,19,19,19,19,19,19,19,19,]),'PLUS':([13,15,16,17,18,24,31,32,37,39,40,41,42,44,45,46,53,61,],[26,-19,-22,-23,-24,26,26,26,26,-30,-31,-20,-21,-26,26,-29,-25,26,]),'MINUS':([13,15,16,17,18,24,31,32,37,39,40,41,42,44,45,46,53,61,],[27,-19,-22,-23,-24,27,27,27,27,-30,-31,-20,-21,-26,27,-29,-25,27,]),'RBRACE':([14,22,25,38,52,55,59,60,62,65,],[-17,-13,-16,-15,-14,-18,64,-12,66,-11,]),'RPAREN':([15,16,17,18,21,30,31,32,34,36,39,40,41,42,43,44,45,46,48,53,57,61,],[-19,-22,-23,-24,35,44,46,47,49,-9,-30,-31,-20,-21,53,-26,-28,-29,-10,-25,-8,-27,]),'COMMA':([15,16,17,18,34,36,39,40,41,42,43,44,45,46,48,53,57,61,],[-19,-22,-23,-24,50,-9,-30,-31,-20,-21,54,-26,-28,-29,-10,-25,-8,-27,]),'TIMES':([15,16,17,18,39,40,41,42,44,46,53,],[28,-22,-23,-24,28,28,-20,-21,-26,-29,-25,]),'DIVIDE':([15,16,17,18,39,40,41,42,44,46,53,],[29,-22,-23,-24,29,29,-20,-21,-26,-29,-25,]),'LBRACE':([35,49,],[51,56,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'func_list':([0,],[2,]),'function':([0,2,],[3,5,]),'params':([7,],[9,]),'stmts':([14,15,],[19,23,]),'stmt':([14,15,19,23,],[20,20,28,28,]),'expr':([21,26,33,34,36,39,40,41,42,43,59,],[29,37,44,45,46,48,49,50,51,54,61,]),'args':([43,],[52,]),}
+_lr_goto_items = {'program':([0,],[1,]),'declaration_list':([0,],[2,]),'declaration':([0,2,],[3,10,]),'function_declaration':([0,2,],[4,4,]),'statement':([0,2,51,56,59,62,],[5,5,60,60,65,65,]),'expression':([8,12,19,20,23,30,54,],[13,24,31,32,37,45,61,]),'term':([8,12,19,20,23,26,27,30,54,],[15,15,15,15,15,39,40,15,15,]),'factor':([8,12,19,20,23,26,27,28,29,30,54,],[16,16,16,16,16,16,16,41,42,16,16,]),'parameter_list':([21,],[34,]),'parameter':([21,50,],[36,57,]),'argument_list':([30,],[43,]),'statement_list':([51,56,],[59,62,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,29 +27,35 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> func_list','program',1,'p_program','compiler_etapa7.py',32),
-  ('func_list -> func_list function','func_list',2,'p_func_list','compiler_etapa7.py',36),
-  ('func_list -> function','func_list',1,'p_func_list','compiler_etapa7.py',37),
-  ('function -> INT ID LPAREN params RPAREN LBRACE stmts RBRACE','function',8,'p_function','compiler_etapa7.py',44),
-  ('function -> INT ID LPAREN RPAREN LBRACE stmts RBRACE','function',7,'p_function','compiler_etapa7.py',45),
-  ('params -> params COMMA INT ID','params',4,'p_params','compiler_etapa7.py',52),
-  ('params -> INT ID','params',2,'p_params','compiler_etapa7.py',53),
-  ('stmts -> stmts stmt','stmts',2,'p_stmts','compiler_etapa7.py',60),
-  ('stmts -> stmt','stmts',1,'p_stmts','compiler_etapa7.py',61),
-  ('stmt -> INT ID EQUALS expr SEMICOLON','stmt',5,'p_stmt_decl_assign','compiler_etapa7.py',68),
-  ('stmt -> ID EQUALS expr SEMICOLON','stmt',4,'p_stmt_assign','compiler_etapa7.py',72),
-  ('stmt -> RETURN expr SEMICOLON','stmt',3,'p_stmt_return','compiler_etapa7.py',76),
-  ('stmt -> RETURN SEMICOLON','stmt',2,'p_stmt_return','compiler_etapa7.py',77),
-  ('stmt -> PRINT LPAREN expr RPAREN SEMICOLON','stmt',5,'p_stmt_print','compiler_etapa7.py',84),
-  ('expr -> expr PLUS expr','expr',3,'p_expr_binop','compiler_etapa7.py',88),
-  ('expr -> expr MINUS expr','expr',3,'p_expr_binop','compiler_etapa7.py',89),
-  ('expr -> expr TIMES expr','expr',3,'p_expr_binop','compiler_etapa7.py',90),
-  ('expr -> expr DIVIDE expr','expr',3,'p_expr_binop','compiler_etapa7.py',91),
-  ('expr -> NUMBER','expr',1,'p_expr_num','compiler_etapa7.py',95),
-  ('expr -> ID','expr',1,'p_expr_id','compiler_etapa7.py',99),
-  ('expr -> ID LPAREN args RPAREN','expr',4,'p_expr_call','compiler_etapa7.py',103),
-  ('expr -> ID LPAREN RPAREN','expr',3,'p_expr_call','compiler_etapa7.py',104),
-  ('args -> args COMMA expr','args',3,'p_args','compiler_etapa7.py',111),
-  ('args -> expr','args',1,'p_args','compiler_etapa7.py',112),
-  ('expr -> LPAREN expr RPAREN','expr',3,'p_expr_paren','compiler_etapa7.py',119),
+  ('program -> declaration_list','program',1,'p_program','parser.py',20),
+  ('declaration_list -> declaration_list declaration','declaration_list',2,'p_declaration_list','parser.py',25),
+  ('declaration_list -> declaration','declaration_list',1,'p_declaration_list','parser.py',26),
+  ('declaration -> function_declaration','declaration',1,'p_declaration','parser.py',34),
+  ('declaration -> statement','declaration',1,'p_declaration','parser.py',35),
+  ('function_declaration -> INT ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE','function_declaration',8,'p_function_declaration','parser.py',40),
+  ('function_declaration -> INT ID LPAREN RPAREN LBRACE statement_list RBRACE','function_declaration',7,'p_function_declaration','parser.py',41),
+  ('parameter_list -> parameter_list COMMA parameter','parameter_list',3,'p_parameter_list','parser.py',49),
+  ('parameter_list -> parameter','parameter_list',1,'p_parameter_list','parser.py',50),
+  ('parameter -> INT ID','parameter',2,'p_parameter','parser.py',58),
+  ('statement_list -> statement_list statement','statement_list',2,'p_stmt_list','parser.py',63),
+  ('statement_list -> statement','statement_list',1,'p_stmt_list','parser.py',64),
+  ('statement -> INT ID SEMICOLON','statement',3,'p_stmt_var_decl','parser.py',72),
+  ('statement -> INT ID EQUALS expression SEMICOLON','statement',5,'p_stmt_var_decl','parser.py',73),
+  ('statement -> ID EQUALS expression SEMICOLON','statement',4,'p_stmt_assign','parser.py',81),
+  ('statement -> RETURN expression SEMICOLON','statement',3,'p_stmt_return','parser.py',86),
+  ('statement -> RETURN SEMICOLON','statement',2,'p_stmt_return','parser.py',87),
+  ('statement -> PRINT LPAREN expression RPAREN SEMICOLON','statement',5,'p_stmt_print','parser.py',95),
+  ('expression -> term','expression',1,'p_expr_term','parser.py',100),
+  ('term -> term TIMES factor','term',3,'p_term_muldiv','parser.py',105),
+  ('term -> term DIVIDE factor','term',3,'p_term_muldiv','parser.py',106),
+  ('term -> factor','term',1,'p_term_factor','parser.py',111),
+  ('factor -> NUMBER','factor',1,'p_factor_num','parser.py',116),
+  ('factor -> ID','factor',1,'p_factor_id','parser.py',121),
+  ('factor -> ID LPAREN argument_list RPAREN','factor',4,'p_factor_call','parser.py',126),
+  ('factor -> ID LPAREN RPAREN','factor',3,'p_factor_call','parser.py',127),
+  ('argument_list -> argument_list COMMA expression','argument_list',3,'p_argument_list','parser.py',135),
+  ('argument_list -> expression','argument_list',1,'p_argument_list','parser.py',136),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','parser.py',144),
+  ('expression -> expression PLUS term','expression',3,'p_expr_addsub','parser.py',149),
+  ('expression -> expression MINUS term','expression',3,'p_expr_addsub','parser.py',150),
 ]

@@ -27,30 +27,37 @@ Este mini compilador processará uma linguagem simples (a ser definida, ex.: min
 
 ```
 compilador-python/
-├── README.md                 # Documentação inicial
+├── README.md                 # Documentação principal
+├── main.py                   # Ponto de entrada (CLI)
 ├── requirements.txt          # Dependências do projeto
 ├── .gitignore                # Arquivos ignorados pelo Git
 ├── src/                      # Código fonte
-│   ├── lexer.py              # Analisador léxico (com suporte a funções)
-│   ├── parser.py             # Analisador sintático
-│   ├── semantic.py           # Analisador semântico
-│   ├── codegen.py            # Gerador de código TAC (versão básica)
-│   ├── codegen_full.py       # Gerador de código com funções
-│   ├── symbol_table.py       # Tabela de símbolos com escopos (ETAPA 7)
-│   ├── runtime.py            # Activation Records e Runtime Stack (ETAPA 7)
-│   ├── interpreter.py        # Interpretador TAC (ETAPA 7)
-│   ├── compiler_etapa7.py    # Sistema completo integrado (ETAPA 7)
-│   └── main.py               # Ponto de entrada principal
-├── tests/                    # Testes unitários e exemplos
+│   ├── lexer.py              # Analisador léxico
+│   ├── parser.py              # Analisador sintático
+│   ├── ast_builder.py         # Construtor de AST
+│   ├── semantic.py            # Analisador semântico
+│   ├── symbol_table.py        # Tabela de símbolos com escopos
+│   ├── ir_generator.py        # Gerador de código intermediário (TAC)
+│   ├── optimizer.py            # Otimizador de código
+│   ├── assembly_generator.py  # Gerador de código assembly
+│   ├── compiler.py            # Pipeline principal do compilador
+│   ├── test_pipeline.py       # Testes do pipeline
+│   ├── runtime.py             # Activation Records e Runtime Stack
+│   ├── interpreter.py         # Interpretador TAC
+│   ├── compiler_etapa7.py    # Sistema completo integrado (legado)
+│   ├── codegen.py             # Gerador de código TAC (legado)
+│   └── codegen_full.py        # Gerador de código com funções (legado)
+├── tests/                     # Testes unitários e exemplos
 │   ├── test_lexer.py
 │   ├── test_parser.py
-│   ├── hello_world.txt       # Exemplo básico
-│   ├── code.txt              # Exemplo de expressões
-│   └── test_functions.txt    # Exemplo com funções (ETAPA 7)
-├── docs/                     # Documentação detalhada
-│   ├── grammar.md
-│   └── ETAPA7_AMBIENTES_EXECUCAO.md  # Documentação da Etapa 7
-└── examples/                 # Exemplos de entrada
+│   ├── hello_world.txt        # Exemplo básico
+│   ├── code.txt               # Exemplo de expressões
+│   └── test_functions.txt     # Exemplo com funções
+├── docs/                      # Documentação detalhada
+│   ├── pipeline.md            # Documentação do pipeline
+│   ├── ETAPA7_AMBIENTES_EXECUCAO.md
+│   └── ...
+└── examples/                  # Exemplos de entrada
     └── hello_world.txt
 ```
 
@@ -90,6 +97,72 @@ venv\Scripts\activate     # Windows
 ```bash
 pip install -r requirements.txt
 ```
+
+## Uso Rápido
+
+### Compilação Básica
+
+```bash
+# Compilar um arquivo
+python main.py tests/test_functions.txt
+
+# Compilar com otimização e salvar saída
+python main.py tests/test_functions.txt -o output.ir --optimize
+
+# Modo verboso (mostra todas as fases)
+python main.py tests/test_functions.txt -v
+
+# Gerar código assembly
+python main.py tests/test_functions.txt --assembly
+```
+
+### Usando a API Python
+
+```python
+from src.compiler import Compiler
+
+code = """
+int soma(int a, int b) {
+    int r = a + b;
+    return r;
+}
+
+int main() {
+    int x = soma(2, 3);
+    print(x);
+    return 0;
+}
+"""
+
+compiler = Compiler(optimize=True)
+result = compiler.compile(code)
+
+if result["success"]:
+    compiler.print_results(result)
+else:
+    for error in result["errors"]:
+        print(f"Erro: {error}")
+```
+
+### Executar Testes
+
+```bash
+# Testes do pipeline completo
+python src/test_pipeline.py
+```
+
+## Pipeline de Compilação
+
+O compilador segue um pipeline tradicional de múltiplas fases:
+
+1. **Análise Léxica** (`lexer.py`) - Tokenização do código fonte
+2. **Análise Sintática** (`parser.py`) - Construção da AST
+3. **Análise Semântica** (`semantic.py`) - Verificação de tipos e escopos
+4. **Geração de IR** (`ir_generator.py`) - Código intermediário (TAC)
+5. **Otimização** (`optimizer.py`) - Otimizações do código
+6. **Geração de Assembly** (`assembly_generator.py`) - Código assembly (opcional)
+
+Veja a documentação completa em [`docs/pipeline.md`](docs/pipeline.md).
 
 ## Como Contribuir
 
