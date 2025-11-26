@@ -1,9 +1,17 @@
-#requirementt files
+# Arquivos do projeto
 Trabalho.md
-GUIA_DE_ESTUDOS.md
-DEMO_ETAPA7.md
 Compiladores.pdf
 Trabalho de Compiladores 29082025.pdf
+
+# Arquivos gerados pelo compilador
+*.asm
+*.tac
+parsetab.py
+parser.out
+
+# Arquivos temporários do PLY
+src/parsetab.py
+compiler/parsetab.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
