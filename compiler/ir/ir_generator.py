@@ -90,10 +90,10 @@ class IRGenerator:
     # EXPRESSÕES
     # ---------------------------------------------------
     def visit_binop(self, node):
-        left = self.visit(node.left)
-        right = self.visit(node.right)
+        left_result = self.visit(node.left)
+        right_result = self.visit(node.right)
         temp = self.new_temp()
-        self.emit(node.op, left, right, temp)
+        self.ir_program.emit(node.op, left_result, right_result, temp)
         return temp
 
     def visit_number(self, node):

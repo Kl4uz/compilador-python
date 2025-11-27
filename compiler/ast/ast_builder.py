@@ -139,7 +139,7 @@ def build_ast(parse_tree):
         return PrintNode(build_ast(parse_tree[1]))
     
     # Operações binárias
-    elif node_type in ('+', '-', '*', '/'):
+    elif node_type in ('+', '-', '*', '/', '<', '>', '<=', '>=', '==', '!='):
         return BinOpNode(node_type, build_ast(parse_tree[1]), build_ast(parse_tree[2]))
     
     # Número
@@ -154,6 +154,10 @@ def build_ast(parse_tree):
     elif node_type == 'call':
         args = [build_ast(arg) for arg in parse_tree[2]]
         return CallNode(parse_tree[1], args)
+    
+    elif node_type in ('LT','GT','LE','GE','EQ','NE'):
+        return BinOpNode(node_type, build_ast(parse_tree[1]), build_ast(parse_tree[2]))
+
     
     else:
         raise ValueError(f"Tipo de nó desconhecido: {node_type}")

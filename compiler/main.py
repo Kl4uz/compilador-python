@@ -273,15 +273,15 @@ if __name__ == "__main__":
     }
     
     int main() {
-        int x = 10;
+        int x = 4;
 
-        if (x2) {
+        if (x >= 4) {
             print(x);
         } else {
             x = x + 1;
         }
 
-        while (x) {
+        while (x>0) {
             x = x - 1;
         }
 

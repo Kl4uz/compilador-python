@@ -22,8 +22,9 @@ class LL1Parser:
     Cada função representa um não-terminal da gramática:
     - program() → declaração*
     - declaration() → int ID = expr ;
-    - expression() → term ((+|-) term)*
-    - term() → factor ((*|/) factor)*
+    - expression → comparison
+    - comparison → term (relop term)*
+    - relop → < | > | <= | >= | == | !=
     - factor() → (expr) | ID | NUMBER
     """
     
@@ -229,20 +230,32 @@ class LL1Parser:
         return ('while', condition, body)
 
     def expression(self):
+        return self.comparison()
+
+    
+    def comparison(self):
+        left = self.additive()
+
+        while self.peek() in ['LT','GT','LE','GE','EQ','NE']:
+            op = self.current_token.value      # '<', '>', '<=', '==', ...
+            self.advance()
+            right = self.additive()
+            left = (op, left, right)
+        return left
+
+    def additive(self):
         left = self.term()
         while self.peek() in ['PLUS', 'MINUS']:
-            op_token = self.current_token
-            op = op_token.value
+            op = self.current_token.value      # '+' ou '-'
             self.advance()
             right = self.term()
             left = (op, left, right)
         return left
-    
+
     def term(self):
         left = self.factor()
         while self.peek() in ['TIMES', 'DIVIDE']:
-            op_token = self.current_token
-            op = op_token.value
+            op = self.current_token.value      # '*' ou '/'
             self.advance()
             right = self.factor()
             left = (op, left, right)
