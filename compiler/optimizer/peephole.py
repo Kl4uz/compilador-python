@@ -20,6 +20,11 @@ class PeepholeOptimizer(OptimizationPass):
     7. x=x → (remove)
     8. x=y; z=x → z=y (elimina intermediário se x não usado depois)
     """
+    def _resolve_const(self, arg, const_map):
+        if isinstance(arg, str):
+            # Apenas strings podem ser identificadores (chaves) em const_map
+            return const_map.get(arg, arg)
+        return arg # Retorna o argumento original se não for uma string (e.g., uma lista)
     
     def __init__(self, symbolic_only=False):
         """
@@ -27,6 +32,7 @@ class PeepholeOptimizer(OptimizationPass):
                        Útil para mostrar simplificação algébrica pura
         """
         self.symbolic_only = symbolic_only
+    
     
     def apply(self, ir_program):
         """Aplica peephole optimization"""
@@ -51,8 +57,8 @@ class PeepholeOptimizer(OptimizationPass):
                     const_map[instr.result] = instr.arg1
             
             # Resolve valores através do mapa de constantes
-            arg1 = const_map.get(instr.arg1, instr.arg1)
-            arg2 = const_map.get(instr.arg2, instr.arg2)
+            arg1 = self._resolve_const(instr.arg1, const_map)
+            arg2 = self._resolve_const(instr.arg2, const_map)
             
             # Padrão 1: x = x + 0 ou x = 0 + x (identidade aditiva)
             if instr.op == '+':

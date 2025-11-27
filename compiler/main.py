@@ -273,11 +273,12 @@ if __name__ == "__main__":
     }
     
     int main() {
-        int x = 5;
-        int y = soma(x, 3);
-        print(y);
+        for (int i = 0; i < 5; i = i + 1) {
+            print(i);
+        }
         return 0;
     }
+
     """
     
     print("Código fonte:")

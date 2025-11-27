@@ -129,3 +129,35 @@ class SemanticAnalyzer:
                     self.error(f"Argumento {i+1}: esperado '{param.param_type}', recebido '{arg_type}'")
         
         return 'int'
+    
+    def visit_if(self, node):
+        cond_type = self.visit(node.condition)
+        if cond_type != 'int':
+            self.error("Condição do IF deve ser do tipo int")
+
+        for stmt in node.then_block:
+            self.visit(stmt)
+
+        if node.else_block:
+            for stmt in node.else_block:
+                self.visit(stmt)
+
+    def visit_while(self, node):
+        cond_type = self.visit(node.condition)
+        if cond_type != 'int':
+            self.error("Condição do WHILE deve ser do tipo int")
+
+        for stmt in node.body:
+            self.visit(stmt)
+    def visit_for(self, node):
+        self.visit(node.init)
+
+        cond_type = self.visit(node.condition)
+        if cond_type != 'int':
+            self.error("Condição do for deve ser int")
+
+        for stmt in node.body:
+            self.visit(stmt)
+
+        self.visit(node.increment)
+

@@ -67,6 +67,23 @@ class CallNode(ASTNode):
     """Nó de chamada de função"""
     def __init__(self, name, args):
         super().__init__('call', name=name, args=args)
+class IfNode(ASTNode):
+    def __init__(self, condition, then_block, else_block):
+        super().__init__('if', condition=condition, then_block=then_block, else_block=else_block)
+
+class WhileNode(ASTNode):
+    def __init__(self, condition, body):
+        super().__init__('while', condition=condition, body=body)
+
+class BlockNode(ASTNode):
+    def __init__(self, statements):
+        super().__init__('block', statements=statements)
+
+class ForNode(ASTNode):
+    def __init__(self, init, condition, increment, body):
+        super().__init__('for', init=init, condition=condition, increment=increment, body=body)
+
+
 
 
 def build_ast(parse_tree):
@@ -108,13 +125,26 @@ def build_ast(parse_tree):
     elif node_type == 'return':
         value = build_ast(parse_tree[1]) if parse_tree[1] else None
         return ReturnNode(value)
+
+    elif node_type == 'if':
+        cond = build_ast(parse_tree[1])
+        then_block = [build_ast(s) for s in parse_tree[2]]
+        else_raw = parse_tree[3]
+        else_block = [build_ast(s) for s in else_raw] if else_raw else None
+        return IfNode(cond, then_block, else_block)
+
+    elif node_type == 'while':
+        cond = build_ast(parse_tree[1])
+        body = [build_ast(s) for s in parse_tree[2]]
+        return WhileNode(cond, body)
+
     
     # Print
     elif node_type == 'print':
         return PrintNode(build_ast(parse_tree[1]))
     
     # Operações binárias
-    elif node_type in ('+', '-', '*', '/'):
+    elif node_type in ('+', '-', '*', '/', '<', '>', '<=', '>=', '==', '!='):
         return BinOpNode(node_type, build_ast(parse_tree[1]), build_ast(parse_tree[2]))
     
     # Número
@@ -129,6 +159,16 @@ def build_ast(parse_tree):
     elif node_type == 'call':
         args = [build_ast(arg) for arg in parse_tree[2]]
         return CallNode(parse_tree[1], args)
+    
+    elif node_type in ('LT','GT','LE','GE','EQ','NE'):
+        return BinOpNode(node_type, build_ast(parse_tree[1]), build_ast(parse_tree[2]))
+    
+    elif node_type == 'for':
+        init = build_ast(parse_tree[1])
+        cond = build_ast(parse_tree[2])
+        inc = build_ast(parse_tree[3])
+        body = [build_ast(s) for s in parse_tree[4]]
+        return ForNode(init, cond, inc, body)
     
     else:
         raise ValueError(f"Tipo de nó desconhecido: {node_type}")

@@ -9,6 +9,7 @@ import ply.lex as lex
 tokens = (
     'ID', 'NUMBER',                              # Identificadores e números
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALS',  # Operadores
+    'LT', 'GT', 'LE', 'GE', 'EQ', 'NE',        # Operadores relacionais
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',     # Delimitadores
     'SEMICOLON', 'COMMA',                        # Pontuação
 )
@@ -18,6 +19,7 @@ reserved = {
     'if': 'IF',
     'else': 'ELSE',
     'while': 'WHILE',
+    'for': 'FOR',
     'return': 'RETURN',
     'int': 'INT',
     'print': 'PRINT'
@@ -42,6 +44,15 @@ t_LBRACE    = r'\{'
 t_RBRACE    = r'\}'
 t_SEMICOLON = r';'
 t_COMMA     = r','
+t_LE        = r'<='
+t_GE        = r'>='
+t_EQ        = r'=='
+t_NE        = r'!='
+t_LT        = r'<'
+t_GT        = r'>'
+t_FOR       = r'for'
+
+
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'  # Identificadores e palavras reservadas
