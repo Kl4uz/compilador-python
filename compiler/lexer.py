@@ -19,6 +19,7 @@ reserved = {
     'if': 'IF',
     'else': 'ELSE',
     'while': 'WHILE',
+    'for': 'FOR',
     'return': 'RETURN',
     'int': 'INT',
     'print': 'PRINT'
@@ -43,12 +44,14 @@ t_LBRACE    = r'\{'
 t_RBRACE    = r'\}'
 t_SEMICOLON = r';'
 t_COMMA     = r','
-t_LE = r'<='
-t_GE = r'>='
-t_EQ = r'=='
-t_NE = r'!='
-t_LT = r'<'
-t_GT = r'>'
+t_LE        = r'<='
+t_GE        = r'>='
+t_EQ        = r'=='
+t_NE        = r'!='
+t_LT        = r'<'
+t_GT        = r'>'
+t_FOR       = r'for'
+
 
 
 def t_ID(t):

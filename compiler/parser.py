@@ -143,10 +143,11 @@ class LL1Parser:
         return params
     def statement_list(self):
         statements = []
-        while self.peek() in ['INT', 'ID', 'RETURN', 'PRINT', 'IF', 'WHILE']:
+        while self.peek() in ['INT', 'ID', 'RETURN', 'PRINT', 'IF', 'WHILE', 'FOR']:
             stmt = self.statement()
             statements.append(stmt)
         return statements
+
 
         
     def parameter(self):
@@ -197,6 +198,10 @@ class LL1Parser:
 
         elif lookahead == 'WHILE':
             return self.while_statement()
+        
+        elif lookahead == 'FOR':
+            return self.for_statement()
+
 
         else:
             self.error(f"Statement inválido: {lookahead}")
@@ -260,6 +265,42 @@ class LL1Parser:
             right = self.factor()
             left = (op, left, right)
         return left
+    
+    def for_statement(self):
+        self.match('FOR')
+        self.match('LPAREN')
+
+        # init
+        if self.peek() == 'INT':
+            init = self.statement()
+        else:
+            init = self.statement()
+
+        # mas o statement consome ';', então SEMICOLON extra não é necessário aqui
+        
+        # condition
+        cond = self.expression()
+        self.match('SEMICOLON')
+
+        # increment
+        # mesma lógica do init
+        if self.peek() == 'ID':
+            expr_name = self.match('ID').value
+            self.match('EQUALS')
+            expr = self.expression()
+            increment = ('assign', expr_name, expr)
+        else:
+            self.error("Esperado incremento (ex: x = x + 1)")
+            increment = None
+
+        self.match('RPAREN')
+
+        self.match('LBRACE')
+        body = self.statement_list()
+        self.match('RBRACE')
+
+        return ('for', init, cond, increment, body)
+
 
 
     def factor(self):

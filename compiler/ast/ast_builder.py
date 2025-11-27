@@ -79,6 +79,11 @@ class BlockNode(ASTNode):
     def __init__(self, statements):
         super().__init__('block', statements=statements)
 
+class ForNode(ASTNode):
+    def __init__(self, init, condition, increment, body):
+        super().__init__('for', init=init, condition=condition, increment=increment, body=body)
+
+
 
 
 def build_ast(parse_tree):
@@ -157,7 +162,13 @@ def build_ast(parse_tree):
     
     elif node_type in ('LT','GT','LE','GE','EQ','NE'):
         return BinOpNode(node_type, build_ast(parse_tree[1]), build_ast(parse_tree[2]))
-
+    
+    elif node_type == 'for':
+        init = build_ast(parse_tree[1])
+        cond = build_ast(parse_tree[2])
+        inc = build_ast(parse_tree[3])
+        body = [build_ast(s) for s in parse_tree[4]]
+        return ForNode(init, cond, inc, body)
     
     else:
         raise ValueError(f"Tipo de nó desconhecido: {node_type}")

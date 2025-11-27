@@ -149,3 +149,15 @@ class SemanticAnalyzer:
 
         for stmt in node.body:
             self.visit(stmt)
+    def visit_for(self, node):
+        self.visit(node.init)
+
+        cond_type = self.visit(node.condition)
+        if cond_type != 'int':
+            self.error("Condição do for deve ser int")
+
+        for stmt in node.body:
+            self.visit(stmt)
+
+        self.visit(node.increment)
+

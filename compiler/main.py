@@ -273,20 +273,12 @@ if __name__ == "__main__":
     }
     
     int main() {
-        int x = 4;
-
-        if (x >= 4) {
-            print(x);
-        } else {
-            x = x + 1;
+        for (int i = 0; i < 5; i = i + 1) {
+            print(i);
         }
-
-        while (x>0) {
-            x = x - 1;
-        }
-
-        return x;
+        return 0;
     }
+
     """
     
     print("Código fonte:")

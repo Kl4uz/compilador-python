@@ -174,3 +174,28 @@ class IRGenerator:
 
         # fim do laço
         self.emit("LABEL", None, None, Lend)
+    def visit_for(self, node):
+        # init
+        self.visit(node.init)
+
+        # labels
+        begin = self.new_label("Lbegin")
+        end = self.new_label("Lend")
+
+        self.ir_program.emit('LABEL', None, None, begin)
+
+        # condition
+        cond_result = self.visit(node.condition)
+        self.ir_program.emit('IF_FALSE_GOTO', cond_result, None, end)
+
+        # body
+        for stmt in node.body:
+            self.visit(stmt)
+
+        # increment
+        self.visit(node.increment)
+
+        # loop
+        self.ir_program.emit('GOTO', None, None, begin)
+        self.ir_program.emit('LABEL', None, None, end)
+
