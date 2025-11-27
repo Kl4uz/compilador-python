@@ -18,205 +18,51 @@ Compilador didático implementado **conforme metodologia ensinada em aula**.Bem-
 
 
 
----### ✨ Características
-
-
-
-## 📁 Estrutura do Projeto (ORGANIZADA)- ✅ **Pipeline completo** de compilação
-
-- ✅ **Separação clara** de fases (léxico → sintático → semântico → IR → otimização → assembly)
-
-```- ✅ **Otimizações** (constant folding, dead code elimination, peephole)
-
-compilador-python/- ✅ **Análise semântica** robusta com detecção de erros
-
-│- ✅ **Suporte a funções** e chamadas aninhadas
-
-├── 🎯 compiler/          # PIPELINE PRINCIPAL (LL(1), CSE, Quádruplas)- ✅ **Código intermediário** (Three-Address Code - TAC)
-
-│   ├── lexer.py              # Análise léxica (tokens)- ✅ **Geração de assembly** MIPS-like
-
-│   ├── parser_ll1.py         # ✅ Parser LL(1) Top-Down (Recursive Descent)- ✅ **Totalmente testável** (cada módulo independente)
-
-│   ├── ast.py                # Árvore Sintática Abstrata
-
-│   ├── analyzer.py           # Análise semântica### 👥 Equipe
-
-│   ├── symbol_table.py       # Tabela de símbolos
-
-│   ├── ir.py                 # Código intermediário (TAC + Quádruplas)- Lucas Farias
-
-│   ├── ir_generator.py       # Gerador de IR- José Lucas
-
-│   ├── optimizer.py          # ✅ Otimizações (CSE, CF, DCE, CP, AS)- Ester Araiz
-
-│   ├── peephole.py           # Otimização Peephole- Henrique Noronha
-
-│   ├── codegen.py            # Coordenador de geração de código
-
-│   ├── assembly.py           # Gerador de Assembly MIPS-like## 📁 Estrutura do Repositório
-
-│   ├── main.py               # Pipeline integrado
-
-│   └── __init__.py### 🆕 Nova Estrutura Modular (`/compiler`)
-
-│
-
-├── 🚀 run.py             # INTERFACE PRINCIPAL (use este!)```
-
-│compilador-python/
-
-├── 📝 tests/             # Arquivos de teste (.txt)├── README.md                    # Este arquivo
-
-│   ├── simples.txt           # Expressão simples├── requirements.txt             # Dependências
-
-│   ├── teste_cse.txt         # Teste CSE├── test_compiler.py             # Suite completa de testes
-
-│   ├── exemplo_professor.txt # Exemplo do professor│
-
-│   └── ...├── compiler/                    # ⭐ COMPILADOR MODULAR (NOVO)
-
-││   ├── README.md                # Documentação detalhada
-
-├── 🎮 demos/             # Demonstrações e testes│   ├── __init__.py              # Pacote Python
-
-│   ├── demo_completo.py│   ├── main.py                  # 🎯 Pipeline unificado
-
-│   ├── test_compiler.py│   ├── lexer.py                 # Etapa 2-3: Análise léxica
-
-│   └── teste_expressoes.py│   ├── parser.py                # Etapa 4: Análise sintática
-
-││   ├── ast.py                   # Construção da AST
-
-├── 📚 docs_projeto/      # Documentação completa│   ├── analyzer.py              # Etapa 5: Análise semântica
-
-│   ├── GUIA_RAPIDO.md│   ├── symbol_table.py          # Tabela de símbolos
-
-│   ├── COMANDOS.md│   ├── ir.py                    # Definição de IR (TAC)
-
-│   └── README_OLD.md│   ├── ir_generator.py          # Etapa 6: Geração de IR
-
-││   ├── optimizer.py             # Framework de otimização
-
-└── 📦 old/               # Implementação anterior (referência)│   ├── peephole.py              # Otimizações peephole
-
-```│   ├── codegen.py               # Coordenador de geração
-
-│   └── assembly.py              # Etapa 7: Geração de assembly
-
----│
-
-├── src/                         # Implementação original (legado)
-
-## 🚀 Como Usar│   ├── lexer.py
-
-│   ├── parser.py
-
-### 📦 Instalação│   ├── codegen.py
-
-│   ├── symbol_table.py
-
-```bash│   ├── runtime.py
-
-pip install -r requirements.txt│   ├── interpreter.py
-
-```│   └── compiler_etapa7.py
-
-│
-
-### 💻 Modo 1: Linha de Comando├── tests/                       # Arquivos de teste
-
-│   ├── hello_world.txt
-
-```bash│   ├── code.txt
-
-# Compilar expressão direta│   ├── test_functions.txt
-
-python run.py -e "5 + 3 * 2"│   └── test_nested_calls.txt
-
-│
-
-# Compilar arquivo└── docs/                        # Documentação
-
-python run.py -f tests/simples.txt    ├── GUIA_DE_ESTUDOS.md       # Guia completo de estudos
-
-    ├── ETAPA7_AMBIENTES_EXECUCAO.md
-
-# Modo verbose (mostra TODAS as fases)    └── RESUMO_ETAPA7.md
-
-python run.py -f tests/exemplo_professor.txt```
-
-
-
-# Modo resumido## 🚀 Início Rápido
-
-python run.py -f tests/simples.txt --quiet
-
-### Instalação
-
-# Salvar assembly
-
-python run.py -f tests/code.txt -o output.asm```bash
-
-```# 1. Clone o repositório
-
-git clone https://github.com/Kl4uz/compilador-python.git
-
-### 🎮 Modo 2: Interativo (REPL)cd compilador-python
-
-
-
-```bash# 2. Instale as dependências
-
-python run.pypip install -r requirements.txt
-
-``````
-
-
-
-Depois digite expressões:### Uso Básico
+## 📂 Estrutura
 
 ```
-
->>> 5 + 3 * 2#### Via Python (Recomendado)
-
->>> int x = a + b * 2;
-
->>> sair```python
-
-```from compiler import compile
-
-
-
-### 📄 Modo 3: Arquivo Texto Simples# Seu código
-
-codigo = """
-
-Crie um arquivo `.txt` com apenas uma linha:int soma(int a, int b) {
-
-    return a + b;
-
-**tests/meu_teste.txt:**}
-
+compiler/
+│
+├── lexer.py           # Análise Léxica (Tokens)
+├── parser.py          # ✅ Análise Sintática LL(1) Top-Down
+├── main.py            # Pipeline Integrado
+│
+├── ast/               # Árvore Sintática Abstrata
+│   ├── ast_builder.py     # Construtor da AST
+│   ├── analyzer.py        # Análise Semântica
+│   └── symbol_table.py    # Tabela de Símbolos
+│
+├── ir/                # Código Intermediário
+│   ├── ir.py              # TAC + Quádruplas
+│   └── ir_generator.py    # Gerador de IR
+│
+├── optimizer/         # Otimizações
+│   ├── optimizer.py       # ✅ CSE, CF, DCE, CP
+│   └── peephole.py        # Peephole + Algebraic Simplification
+│
+└── codegen/           # Geração de Código
+    ├── codegen.py         # Coordenador
+    └── assembly.py        # Assembly MIPS-like
 ```
 
-int x = a + b * 2;int main() {
 
-```    int resultado = soma(5, 3);
-
-    print(resultado);
-
-Compile:    return 0;
-
-```bash}
-
-python run.py -f tests/meu_teste.txt"""
+## 🎯 Pipeline
 
 ```
-
-# Compilar
-
----result = compile(codigo, optimize=True, verbose=True)
+Código Fonte
+    ↓
+[lexer.py]      → Tokens
+    ↓
+[parser.py]     → Parse Tree (LL(1) Top-Down)
+    ↓
+[ast/]          → AST + Análise Semântica
+    ↓
+[ir/]           → TAC + Quádruplas
+    ↓
+[optimizer/]    → IR Otimizado (CSE, CF, DCE, etc)
+    ↓
+[codegen/]      → Assembly MIPS-like
+```
 
 
 
