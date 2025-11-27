@@ -39,6 +39,7 @@ class LL1Parser:
         self.errors.append(error_msg)
         print(error_msg)
     
+    
     def advance(self):
         self.pos += 1
         if self.pos < len(self.tokens):
@@ -80,7 +81,7 @@ class LL1Parser:
     
     def declaration_list(self):
         declarations = []
-        while self.peek() in ['INT', 'RETURN', 'PRINT', 'ID']:
+        while self.peek() in ['INT', 'ID', 'RETURN', 'PRINT', 'IF', 'WHILE']:
             decl = self.declaration()
             if decl:
                 declarations.append(decl)
@@ -139,43 +140,39 @@ class LL1Parser:
                 params.append(param)
         
         return params
-    
+    def statement_list(self):
+        statements = []
+        while self.peek() in ['INT', 'ID', 'RETURN', 'PRINT', 'IF', 'WHILE']:
+            stmt = self.statement()
+            statements.append(stmt)
+        return statements
+
+        
     def parameter(self):
         self.match('INT')
         name_token = self.match('ID')
         name = name_token.value if name_token else 'unknown'
         return ('param', name, 'int')
     
-    def statement_list(self):
-        statements = []
-        while self.peek() in ['INT', 'ID', 'RETURN', 'PRINT']:
-            stmt = self.statement()
-            if stmt:
-                statements.append(stmt)
-            else:
-                break
-        return statements
     
     def statement(self):
         lookahead = self.peek()
-        
+
         if lookahead == 'INT':
             self.advance()
-            name_token = self.match('ID')
-            name = name_token.value if name_token else 'unknown'
+            name_tok = self.match('ID')
             self.match('EQUALS')
             expr = self.expression()
             self.match('SEMICOLON')
-            return ('decl_assign', name, expr)
-        
+            return ('decl_assign', name_tok.value, expr)
+
         elif lookahead == 'ID':
-            name_token = self.match('ID')
-            name = name_token.value if name_token else 'unknown'
+            name_tok = self.match('ID')
             self.match('EQUALS')
             expr = self.expression()
             self.match('SEMICOLON')
-            return ('assign', name, expr)
-        
+            return ('assign', name_tok.value, expr)
+
         elif lookahead == 'RETURN':
             self.advance()
             if self.peek() != 'SEMICOLON':
@@ -185,7 +182,7 @@ class LL1Parser:
             else:
                 self.match('SEMICOLON')
                 return ('return', None)
-        
+
         elif lookahead == 'PRINT':
             self.advance()
             self.match('LPAREN')
@@ -193,11 +190,44 @@ class LL1Parser:
             self.match('RPAREN')
             self.match('SEMICOLON')
             return ('print', expr)
-        
+
+        elif lookahead == 'IF':
+            return self.if_statement()
+
+        elif lookahead == 'WHILE':
+            return self.while_statement()
+
         else:
-            self.error(f"Statement inválido: '{lookahead}'")
+            self.error(f"Statement inválido: {lookahead}")
             return None
-    
+
+    def if_statement(self):
+        self.match('IF')
+        self.match('LPAREN')
+        condition = self.expression()
+        self.match('RPAREN')
+        self.match('LBRACE')
+        then_block = self.statement_list()
+        self.match('RBRACE')
+
+        else_block = None
+        if self.peek() == 'ELSE':
+            self.advance()
+            self.match('LBRACE')
+            else_block = self.statement_list()
+            self.match('RBRACE')
+
+        return ('if', condition, then_block, else_block)
+    def while_statement(self):
+        self.match('WHILE')
+        self.match('LPAREN')
+        condition = self.expression()
+        self.match('RPAREN')
+        self.match('LBRACE')
+        body = self.statement_list()
+        self.match('RBRACE')
+        return ('while', condition, body)
+
     def expression(self):
         left = self.term()
         while self.peek() in ['PLUS', 'MINUS']:
@@ -217,20 +247,22 @@ class LL1Parser:
             right = self.factor()
             left = (op, left, right)
         return left
-    
+
+
     def factor(self):
         lookahead = self.peek()
-        
+
         if lookahead == 'NUMBER':
             token = self.current_token
             self.advance()
             return ('num', token.value)
-        
+
         elif lookahead == 'ID':
             name_token = self.current_token
             name = name_token.value
             self.advance()
-            
+
+            # chamada de função
             if self.peek() == 'LPAREN':
                 self.advance()
                 args = []
@@ -240,16 +272,17 @@ class LL1Parser:
                 return ('call', name, args)
             else:
                 return ('id', name)
-        
+
         elif lookahead == 'LPAREN':
             self.advance()
             expr = self.expression()
             self.match('RPAREN')
             return expr
-        
+
         else:
             self.error(f"Fator inválido: '{lookahead}'")
             return ('num', 0)
+
     
     def argument_list(self):
         args = []

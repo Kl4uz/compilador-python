@@ -117,13 +117,13 @@ class DeadCodeElimination(OptimizationPass):
         while changed:
             changed = False
             for instr in instructions:
-                if instr.result and instr.result in used:
+                # ...
                     # Marca arg1 como usado
-                    if instr.arg1 and not self._is_literal(instr.arg1) and instr.arg1 not in used:
+                    if isinstance(instr.arg1, str) and instr.arg1 and not self._is_literal(instr.arg1) and instr.arg1 not in used:
                         used.add(instr.arg1)
                         changed = True
                     # Marca arg2 como usado
-                    if instr.arg2 and not self._is_literal(instr.arg2) and instr.arg2 not in used:
+                    if isinstance(instr.arg2, str) and instr.arg2 and not self._is_literal(instr.arg2) and instr.arg2 not in used:
                         used.add(instr.arg2)
                         changed = True
         

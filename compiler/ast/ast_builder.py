@@ -67,6 +67,18 @@ class CallNode(ASTNode):
     """Nó de chamada de função"""
     def __init__(self, name, args):
         super().__init__('call', name=name, args=args)
+class IfNode(ASTNode):
+    def __init__(self, condition, then_block, else_block):
+        super().__init__('if', condition=condition, then_block=then_block, else_block=else_block)
+
+class WhileNode(ASTNode):
+    def __init__(self, condition, body):
+        super().__init__('while', condition=condition, body=body)
+
+class BlockNode(ASTNode):
+    def __init__(self, statements):
+        super().__init__('block', statements=statements)
+
 
 
 def build_ast(parse_tree):
@@ -108,6 +120,19 @@ def build_ast(parse_tree):
     elif node_type == 'return':
         value = build_ast(parse_tree[1]) if parse_tree[1] else None
         return ReturnNode(value)
+
+    elif node_type == 'if':
+        cond = build_ast(parse_tree[1])
+        then_block = [build_ast(s) for s in parse_tree[2]]
+        else_raw = parse_tree[3]
+        else_block = [build_ast(s) for s in else_raw] if else_raw else None
+        return IfNode(cond, then_block, else_block)
+
+    elif node_type == 'while':
+        cond = build_ast(parse_tree[1])
+        body = [build_ast(s) for s in parse_tree[2]]
+        return WhileNode(cond, body)
+
     
     # Print
     elif node_type == 'print':

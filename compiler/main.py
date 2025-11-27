@@ -273,10 +273,19 @@ if __name__ == "__main__":
     }
     
     int main() {
-        int x = 5;
-        int y = soma(x, 3);
-        print(y);
-        return 0;
+        int x = 10;
+
+        if (x2) {
+            print(x);
+        } else {
+            x = x + 1;
+        }
+
+        while (x) {
+            x = x - 1;
+        }
+
+        return x;
     }
     """
     
