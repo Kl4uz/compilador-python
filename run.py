@@ -127,7 +127,7 @@ def mostrar_resultado(result, verbose=True):
         result['ir'].print_code()
         
         print("\n" + "="*70)
-        print(" QUÁDRUPLAS (Formato do Professor)")
+        print(" QUÁDRUPLAS")
         print("="*70)
         result['ir'].print_quadruples()
         
