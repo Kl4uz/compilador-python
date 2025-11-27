@@ -1,207 +1,582 @@
-# Mini Compilador em Python
+# 🚀 Mini-Compilador Python# 🚀 Mini Compilador em Python
 
-Bem-vindo ao repositório do **Mini Compilador em Python**, um projeto acadêmico desenvolvido para a disciplina de Compiladores. Este projeto tem como objetivo implementar um compilador simples para uma linguagem de programação minimalista, cobrindo as fases de análise léxica, sintática, semântica e geração de código.
 
-## Sobre o Projeto
 
-Este mini compilador processará uma linguagem simples (a ser definida, ex.: mini-Python ou aritmética básica) e será implementado em Python. O projeto é desenvolvido por uma equipe de estudantes, com foco em aprendizado colaborativo e aplicação prática de conceitos de compiladores.
+Compilador didático implementado **conforme metodologia ensinada em aula**.Bem-vindo ao repositório do **Mini Compilador em Python**, um projeto acadêmico completo desenvolvido para a disciplina de Compiladores. 
 
-### Objetivos
 
-- Implementar um lexer para tokenização.
-- Construir um parser para gerar uma Árvore de Sintaxe Abstrata (AST).
-- Realizar análise semântica para verificar tipos e escopo.
-- Gerar código de saída (ex.: bytecode ou assembly simples).
-- Testar o compilador com casos de uso variados.
 
-### Equipe
+## 👥 EquipeEste projeto implementa um **compilador completo** para uma mini-linguagem C-like, cobrindo todas as fases: **análise léxica, sintática, semântica, geração de código intermediário, otimizações e geração de assembly**.
 
 - Lucas Farias
-- José Lucas
+
+- José Lucas  ## 📚 Sobre o Projeto
+
 - Ester Araiz
-- Henrique Noronha
 
-*(Substitua os nomes acima pelos membros reais da equipe.)*
+- Henrique NoronhaCompilador educacional que transforma código fonte em assembly MIPS-like, passando por todas as etapas clássicas de compilação com arquitetura modular e bem documentada.
 
-## Estrutura do Repositório
 
-```
-compilador-python/
-├── README.md                 # Documentação inicial
-├── requirements.txt          # Dependências do projeto
-├── .gitignore                # Arquivos ignorados pelo Git
-├── src/                      # Código fonte
-│   ├── lexer.py              # Analisador léxico (com suporte a funções)
-│   ├── parser.py             # Analisador sintático
-│   ├── semantic.py           # Analisador semântico
-│   ├── codegen.py            # Gerador de código TAC (versão básica)
-│   ├── codegen_full.py       # Gerador de código com funções
-│   ├── symbol_table.py       # Tabela de símbolos com escopos (ETAPA 7)
-│   ├── runtime.py            # Activation Records e Runtime Stack (ETAPA 7)
-│   ├── interpreter.py        # Interpretador TAC (ETAPA 7)
-│   ├── compiler_etapa7.py    # Sistema completo integrado (ETAPA 7)
-│   └── main.py               # Ponto de entrada principal
-├── tests/                    # Testes unitários e exemplos
-│   ├── test_lexer.py
-│   ├── test_parser.py
-│   ├── hello_world.txt       # Exemplo básico
-│   ├── code.txt              # Exemplo de expressões
-│   └── test_functions.txt    # Exemplo com funções (ETAPA 7)
-├── docs/                     # Documentação detalhada
-│   ├── grammar.md
-│   └── ETAPA7_AMBIENTES_EXECUCAO.md  # Documentação da Etapa 7
-└── examples/                 # Exemplos de entrada
-    └── hello_world.txt
-```
 
-## Dependências
+---### ✨ Características
 
-As seguintes bibliotecas Python serão usadas no projeto (atualizaremos conforme necessário):
 
-- **Python 3.8+**: Linguagem principal.
-- **PLY (Python Lex-Yacc)**: Para análise léxica e sintática.
-- **pytest**: Para testes unitários e integração.
-- **black** (opcional): Para formatação de código.
-- **pre-commit** (opcional): Para verificações automáticas antes de commits.
 
-Instale as dependências com:
+## 📁 Estrutura do Projeto (ORGANIZADA)- ✅ **Pipeline completo** de compilação
 
-```pip install -r requirements.txt```
+- ✅ **Separação clara** de fases (léxico → sintático → semântico → IR → otimização → assembly)
 
-## Configuração inicial
+```- ✅ **Otimizações** (constant folding, dead code elimination, peephole)
 
-1. Clone o repositorio
+compilador-python/- ✅ **Análise semântica** robusta com detecção de erros
 
-```bash
+│- ✅ **Suporte a funções** e chamadas aninhadas
+
+├── 🎯 compiler/          # PIPELINE PRINCIPAL (LL(1), CSE, Quádruplas)- ✅ **Código intermediário** (Three-Address Code - TAC)
+
+│   ├── lexer.py              # Análise léxica (tokens)- ✅ **Geração de assembly** MIPS-like
+
+│   ├── parser_ll1.py         # ✅ Parser LL(1) Top-Down (Recursive Descent)- ✅ **Totalmente testável** (cada módulo independente)
+
+│   ├── ast.py                # Árvore Sintática Abstrata
+
+│   ├── analyzer.py           # Análise semântica### 👥 Equipe
+
+│   ├── symbol_table.py       # Tabela de símbolos
+
+│   ├── ir.py                 # Código intermediário (TAC + Quádruplas)- Lucas Farias
+
+│   ├── ir_generator.py       # Gerador de IR- José Lucas
+
+│   ├── optimizer.py          # ✅ Otimizações (CSE, CF, DCE, CP, AS)- Ester Araiz
+
+│   ├── peephole.py           # Otimização Peephole- Henrique Noronha
+
+│   ├── codegen.py            # Coordenador de geração de código
+
+│   ├── assembly.py           # Gerador de Assembly MIPS-like## 📁 Estrutura do Repositório
+
+│   ├── main.py               # Pipeline integrado
+
+│   └── __init__.py### 🆕 Nova Estrutura Modular (`/compiler`)
+
+│
+
+├── 🚀 run.py             # INTERFACE PRINCIPAL (use este!)```
+
+│compilador-python/
+
+├── 📝 tests/             # Arquivos de teste (.txt)├── README.md                    # Este arquivo
+
+│   ├── simples.txt           # Expressão simples├── requirements.txt             # Dependências
+
+│   ├── teste_cse.txt         # Teste CSE├── test_compiler.py             # Suite completa de testes
+
+│   ├── exemplo_professor.txt # Exemplo do professor│
+
+│   └── ...├── compiler/                    # ⭐ COMPILADOR MODULAR (NOVO)
+
+││   ├── README.md                # Documentação detalhada
+
+├── 🎮 demos/             # Demonstrações e testes│   ├── __init__.py              # Pacote Python
+
+│   ├── demo_completo.py│   ├── main.py                  # 🎯 Pipeline unificado
+
+│   ├── test_compiler.py│   ├── lexer.py                 # Etapa 2-3: Análise léxica
+
+│   └── teste_expressoes.py│   ├── parser.py                # Etapa 4: Análise sintática
+
+││   ├── ast.py                   # Construção da AST
+
+├── 📚 docs_projeto/      # Documentação completa│   ├── analyzer.py              # Etapa 5: Análise semântica
+
+│   ├── GUIA_RAPIDO.md│   ├── symbol_table.py          # Tabela de símbolos
+
+│   ├── COMANDOS.md│   ├── ir.py                    # Definição de IR (TAC)
+
+│   └── README_OLD.md│   ├── ir_generator.py          # Etapa 6: Geração de IR
+
+││   ├── optimizer.py             # Framework de otimização
+
+└── 📦 old/               # Implementação anterior (referência)│   ├── peephole.py              # Otimizações peephole
+
+```│   ├── codegen.py               # Coordenador de geração
+
+│   └── assembly.py              # Etapa 7: Geração de assembly
+
+---│
+
+├── src/                         # Implementação original (legado)
+
+## 🚀 Como Usar│   ├── lexer.py
+
+│   ├── parser.py
+
+### 📦 Instalação│   ├── codegen.py
+
+│   ├── symbol_table.py
+
+```bash│   ├── runtime.py
+
+pip install -r requirements.txt│   ├── interpreter.py
+
+```│   └── compiler_etapa7.py
+
+│
+
+### 💻 Modo 1: Linha de Comando├── tests/                       # Arquivos de teste
+
+│   ├── hello_world.txt
+
+```bash│   ├── code.txt
+
+# Compilar expressão direta│   ├── test_functions.txt
+
+python run.py -e "5 + 3 * 2"│   └── test_nested_calls.txt
+
+│
+
+# Compilar arquivo└── docs/                        # Documentação
+
+python run.py -f tests/simples.txt    ├── GUIA_DE_ESTUDOS.md       # Guia completo de estudos
+
+    ├── ETAPA7_AMBIENTES_EXECUCAO.md
+
+# Modo verbose (mostra TODAS as fases)    └── RESUMO_ETAPA7.md
+
+python run.py -f tests/exemplo_professor.txt```
+
+
+
+# Modo resumido## 🚀 Início Rápido
+
+python run.py -f tests/simples.txt --quiet
+
+### Instalação
+
+# Salvar assembly
+
+python run.py -f tests/code.txt -o output.asm```bash
+
+```# 1. Clone o repositório
+
 git clone https://github.com/Kl4uz/compilador-python.git
-cd compilador-python
+
+### 🎮 Modo 2: Interativo (REPL)cd compilador-python
+
+
+
+```bash# 2. Instale as dependências
+
+python run.pypip install -r requirements.txt
+
+``````
+
+
+
+Depois digite expressões:### Uso Básico
+
 ```
 
-2. Crie um ambiente virtual
+>>> 5 + 3 * 2#### Via Python (Recomendado)
+
+>>> int x = a + b * 2;
+
+>>> sair```python
+
+```from compiler import compile
+
+
+
+### 📄 Modo 3: Arquivo Texto Simples# Seu código
+
+codigo = """
+
+Crie um arquivo `.txt` com apenas uma linha:int soma(int a, int b) {
+
+    return a + b;
+
+**tests/meu_teste.txt:**}
+
+```
+
+int x = a + b * 2;int main() {
+
+```    int resultado = soma(5, 3);
+
+    print(resultado);
+
+Compile:    return 0;
+
+```bash}
+
+python run.py -f tests/meu_teste.txt"""
+
+```
+
+# Compilar
+
+---result = compile(codigo, optimize=True, verbose=True)
+
+
+
+## 📊 Pipeline de Compilaçãoif result['success']:
+
+    print("✓ Compilação bem-sucedida!")
+
+**Conforme metodologia do professor:**    for linha in result['assembly']:
+
+        print(linha)
+
+| Fase | Entrada | Saída | Arquivo |else:
+
+|------|---------|-------|---------|    print("✗ Erros:", result['errors'])
+
+| **1. Léxico** | Código fonte | Tokens | `lexer.py` |```
+
+| **2. Sintático LL(1)** | Tokens | Parse Tree | `parser_ll1.py` ✅ |
+
+| **3. AST** | Parse Tree | AST | `ast.py` |#### Via Linha de Comando
+
+| **4. Semântica** | AST | Tabela Símbolos | `analyzer.py` |
+
+| **5. IR** | AST | TAC + Quádruplas | `ir_generator.py` ✅ |```bash
+
+| **6. Otimizações** | IR | IR Otimizado | `optimizer.py` ✅ |# Compilar arquivo
+
+| **7. Assembly** | IR | MIPS-like | `assembly.py` |python compiler/main.py tests/hello_world.txt --verbose
+
+
+
+---# Salvar assembly
+
+python compiler/main.py tests/code.txt -o output.asm
+
+## ✅ Implementado Conforme Professor
+
+# Sem otimizações
+
+### ✅ Parser LL(1) Top-Downpython compiler/main.py tests/code.txt --no-optimize
+
+- **Recursive Descent** manual```
+
+- **Lookahead de 1 token**
+
+- Cada não-terminal = função recursiva### Testes
+
+- Arquivo: `compiler/parser_ll1.py`
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+
+### ✅ Eliminação de Subexpressões Comuns (CSE)# Rodar suite completa de testes
+
+```pythonpython test_compiler.py
+
+# Antes:
+
+t1 = a + b# Testar módulo individual
+
+t2 = a + b  # redundante!python compiler/lexer.py
+
+python compiler/parser.py
+
+# Depois (CSE):python compiler/optimizer.py
+
+t1 = a + b```
+
+t2 = t1     # reutiliza!
+
+```## 📦 Dependências
+
+
+
+### ✅ Formato Quádruplas- **Python 3.8+**: Linguagem principal
+
+```- **PLY (Python Lex-Yacc) 3.11**: Análise léxica e sintática
+
+(operação, arg1, arg2, resultado)- **pytest**: Testes (opcional)
+
+(*, b, 2, t0)
+
+(+, a, t0, t1)```bash
+
+(assign, t1, -, x)pip install ply
+
+``````
+
+
+
+### ✅ Todas as Otimizações## 🔄 Pipeline de Compilação
+
+1. **CSE** - Eliminação de Subexpressões Comuns
+
+2. **Constant Folding** - Avalia em tempo de compilação```
+
+3. **Algebraic Simplification** - x*1→x, x+0→x, x*0→0   Código Fonte (.txt)
+
+4. **Peephole** - x*2→x<<1         ↓
+
+5. **Copy Propagation** - Propaga cópias   [1] LEXER (lexer.py)
+
+6. **Dead Code Elimination** - Remove código morto       → Tokenização
+
+         ↓
+
+---   [2] PARSER (parser.py)
+
+       → Parse Tree (BNF)
+
+## 📖 Exemplo Completo         ↓
+
+   [3] AST Builder (ast.py)
+
+### Entrada:       → Abstract Syntax Tree
+
+```c         ↓
+
+int x = a + b * 2;   [4] ANALYZER (analyzer.py)
+
+```       → Análise Semântica
+
+       → Symbol Table
+
+### Saída (Verbose):         ↓
+
+   [5] IR GENERATOR (ir_generator.py)
+
+```       → Three-Address Code (TAC)
+
+✅ COMPILAÇÃO BEM-SUCEDIDA!         ↓
+
+   [6] OPTIMIZER (optimizer.py + peephole.py)
+
+━━━ TOKENS ━━━       → Constant Folding
+
+28 tokens: INT, ID, EQUALS, ID, PLUS, ID, TIMES, NUMBER, SEMICOLON...       → Dead Code Elimination
+
+       → Copy Propagation
+
+━━━ TABELA DE SÍMBOLOS ━━━       → Peephole Optimization
+
+main: function (params=0)         ↓
+
+  a: int   [7] ASSEMBLY GENERATOR (assembly.py)
+
+  b: int       → Código MIPS-like
+
+  x: int         ↓
+
+    Assembly (.asm)
+
+━━━ CÓDIGO INTERMEDIÁRIO (TAC) ━━━```
+
+0: begin_func main
+
+1: a = 7## ✅ Etapas Implementadas
+
+2: b = 8
+
+3: t0 = b * 2| Etapa | Descrição | Status | Módulo |
+
+4: t1 = a + t0|-------|-----------|--------|--------|
+
+5: x = t1| **2** | Alfabeto e definição de tokens | ✅ Completo | `lexer.py` |
+
+6: return 0| **3** | Análise léxica (tokenização) | ✅ Completo | `lexer.py` |
+
+7: end_func main| **4** | Análise sintática (parser BNF) | ✅ Completo | `parser.py` |
+
+| **5** | Análise semântica | ✅ Completo | `analyzer.py` |
+
+━━━ QUÁDRUPLAS ━━━| **6** | Geração de código intermediário (TAC) | ✅ Completo | `ir_generator.py` |
+
+0: (begin_func, main, -, -)| **7** | Ambientes de execução + Assembly | ✅ Completo | `assembly.py` |
+
+1: (assign, 7, -, a)| **Extra** | Otimizações | ✅ Completo | `optimizer.py`, `peephole.py` |
+
+2: (assign, 8, -, b)
+
+3: (*, b, 2, t0)## 🎯 Funcionalidades
+
+4: (+, a, t0, t1)
+
+5: (assign, t1, -, x)### Análise Léxica (Etapa 2-3)
+
+6: (return, 0, -, -)- ✅ Reconhecimento de tokens (palavras-chave, operadores, identificadores, números)
+
+7: (end_func, main, -, -)- ✅ Tratamento de espaços em branco e comentários
+
+- ✅ Detecção de erros léxicos
+
+━━━ ASSEMBLY (MIPS-like) ━━━
+
+main:### Análise Sintática (Etapa 4)
+
+  addi $sp, $sp, -4- ✅ Parser baseado em gramática BNF
+
+  sw $fp, 0($sp)- ✅ Precedência de operadores
+
+  move $fp, $sp- ✅ Suporte a declarações de função
+
+  li $t0, 8- ✅ Expressões aritméticas
+
+  sw $t0, b- ✅ Detecção de erros sintáticos
+
+  li $t1, 7
+
+  sw $t1, a### Análise Semântica (Etapa 5)
+
+  mul $t2, $t0, 2- ✅ Verificação de tipos
+
+  add $t3, $t1, $t2- ✅ Verificação de escopo (variáveis e funções)
+
+  move $t4, $t3- ✅ Detecção de variáveis não declaradas
+
+  sw $t4, x- ✅ Verificação de parâmetros de função
+
+  move $v0, 0- ✅ Validação de número de argumentos
+
+  lw $fp, 0($sp)
+
+  addi $sp, $sp, 4### Geração de Código (Etapa 6-7)
+
+  jr $ra- ✅ Código intermediário (Three-Address Code)
+
+```- ✅ Otimizações:
+
+  - Constant folding (5+3 → 8)
+
+---  - Dead code elimination
+
+  - Copy propagation
+
+## 🧪 Testes Rápidos  - Peephole (x+0 → x, x*1 → x)
+
+  - Simplificação algébrica (x-x → 0)
+
+```bash- ✅ Geração de assembly MIPS-like
+
+# Teste básico- ✅ Alocação de registradores
+
+python run.py -f tests/simples.txt- ✅ Gerenciamento de pilha (stack frames)
+
+
+
+# Teste CSE (vê otimização acontecendo!)### Ambientes de Execução (Etapa 7)
+
+python run.py -f tests/teste_cse.txt- ✅ Activation Records completos
+
+- ✅ Runtime Stack para chamadas de função
+
+# Exemplo do professor- ✅ Tabela de símbolos com escopos aninhados
+
+python run.py -f tests/exemplo_professor.txt- ✅ Suporte a chamadas recursivas e aninhadas
+
+- ✅ Links dinâmicos e estáticos
+
+# Teste com expressões complexas
+
+python demos/teste_expressoes.py## 📖 Documentação
+
 ```
 
-3. Instale as Dependências
+- **`compiler/README.md`**: Documentação detalhada da arquitetura modular
 
-```bash
-pip install -r requirements.txt
-```
+---- **`docs/GUIA_DE_ESTUDOS.md`**: Guia completo de estudos (500+ linhas)
 
-## Como Contribuir
+- **`docs/ETAPA7_AMBIENTES_EXECUCAO.md`**: Documentação da Etapa 7
 
-- Crie uma branch para sua feature: ``git checkout -b feature/nome-da-tarefa.``
-- Faça commits atômicos com mensagens claras (ex.: `feat: adiciona lexer para operadores`).
-- Envie um Pull Request para a branch `main` com descrição detalhada.
+## 📚 Documentação Adicional- **Cada módulo**: Possui docstrings e exemplos de teste
 
----
 
-## 🎯 Etapa 7 - Ambientes de Execução (IMPLEMENTADO!)
 
-### ✅ Funcionalidades Implementadas:
+Veja `docs_projeto/` para:---
 
-#### **Atividade 1 - Modelagem do Ambiente de Execução:**
-- ✅ Organização de memória (código, dados globais, heap, stack)
-- ✅ Comportamento da pilha de ativação para chamadas de funções
-- ✅ Armazenamento de variáveis globais, locais e parâmetros
+- **GUIA_RAPIDO.md** - Referência rápida
 
-#### **Atividade 2 - Implementação do Registro de Ativação:**
-- ✅ Estrutura completa de Activation Record contendo:
-  * Parâmetros formais
-  * Variáveis locais
-  * Valor de retorno
-  * Links dinâmico e estático
-  * Endereço de retorno
-  * Variáveis temporárias
-- ✅ Demonstração de criação e destruição durante execução
+- **COMANDOS.md** - Lista de comandos úteis## Licenca
 
-#### **Atividade 3 - Integração com Tabela de Símbolos:**
-- ✅ Associação de escopo e offset às variáveis
-- ✅ Distinção entre variáveis globais e locais
-- ✅ Simulação de recuperação de valores durante chamada de função
-
-### 🚀 Como Executar a Etapa 7:
-
-```bash
-# Executar o compilador completo com exemplo de função
-python src/compiler_etapa7.py
-```
-
-### 📖 Documentação Completa:
-Veja a documentação detalhada em: **`docs/ETAPA7_AMBIENTES_EXECUCAO.md`**
-
-### 🧪 Código de Teste:
-```c
-int soma(int a, int b) {
-    int r = a + b;
-    return r;
-}
-
-int main() {
-    int x = soma(2, 3);
-    print(x);
-    return 0;
-}
-```
-
-**Saída:**
-```
->>> OUTPUT: 5
-```
-
-### 📊 Recursos Implementados:
-- **Tabela de Símbolos** com escopos aninhados (`src/symbol_table.py`)
-- **Activation Records** completos (`src/runtime.py`)
-- **Runtime Stack** para gerenciar chamadas (`src/runtime.py`)
-- **Gerador de TAC** para funções (`src/compiler_etapa7.py`)
-- **Interpretador TAC** com simulação de execução (`src/interpreter.py`)
-
----
-
-## Licenca
+- **README_OLD.md** - Documentação anterior completa
 
 Este projeto esta licenciado sob a MIT license.
 
+---
+
 ## Gramatica - Forma BNF
+
+## 🎯 Metodologia Aplicada
 
 ```bnf
 
-<program> ::= <stmt_list>
+### Análise Léxica
+
+- Expressões Regulares (ER)<program> ::= <stmt_list>
+
+- PLY gera AFD automaticamente
 
 <stmt_list> ::= <stmt> | <stmt> <stmt_list>
 
-<stmt> ::= <assign_stmt> 
-         | <if_stmt> 
-         | <while_stmt> 
+### Análise Sintática
+
+- **LL(1) Top-Down** ✅<stmt> ::= <assign_stmt> 
+
+- **Recursive Descent** ✅         | <if_stmt> 
+
+- **1 token de lookahead** ✅         | <while_stmt> 
+
          | <print_stmt>
 
-<assign_stmt> ::= <id> "=" <expr> ";"
+### Código Intermediário
+
+- **Three-Address Code (TAC)** ✅<assign_stmt> ::= <id> "=" <expr> ";"
+
+- **Quádruplas** ✅
 
 <if_stmt> ::= "if" "(" <expr> ")" "{" <stmt_list> "}" 
-            | "if" "(" <expr> ")" "{" <stmt_list> "}" "else" "{" <stmt_list> "}"
 
-<while_stmt> ::= "while" "(" <expr> ")" "{" <stmt_list> "}"
+### Otimizações            | "if" "(" <expr> ")" "{" <stmt_list> "}" "else" "{" <stmt_list> "}"
 
-<print_stmt> ::= "print" "(" <expr> ")" ";"
+- **CSE** (Common Subexpression Elimination) ✅
+
+- **Constant Folding** ✅<while_stmt> ::= "while" "(" <expr> ")" "{" <stmt_list> "}"
+
+- **Dead Code Elimination** ✅
+
+- **Copy Propagation** ✅<print_stmt> ::= "print" "(" <expr> ")" ";"
+
+- **Algebraic Simplification** ✅
 
 <expr> ::= <term> | <expr> "+" <term> | <expr> "-" <term>
 
-<term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
+### Assembly
+
+- **MIPS-like**<term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
+
+- **LOAD/MUL/ADD/STORE** ✅
 
 <factor> ::= <number> | <id> | "(" <expr> ")"
 
+---
+
 <id> ::= <letter> { <letter> | <digit> }
+
+## 📝 Licença
 
 <number> ::= <digit> { <digit> }
 
+MIT License
+
 <letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
+
+---
 
 <digit> ::= "0" | "1" | ... | "9"
 
+**📚 Projeto Acadêmico - Disciplina de Compiladores**
+
 ```
+
+*Implementado conforme metodologia ensinada em aula.*
 
 # Autômato Finito Determinístico - Compilador Linguagem Mínima
 

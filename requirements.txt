@@ -1,4 +1,9 @@
-ply==3.11
-pytest==7.4.0
-black==24.4.2
-pre-commit==3.3.3
+# Dependências principais
+ply==3.11        # Python Lex-Yacc para análise léxica e sintática
+
+# Dependências de desenvolvimento (opcionais)
+pytest==7.4.0      # Framework de testes
+black==24.4.2      # Formatação de código
+pre-commit==3.3.3  # Git hooks para qualidade
+
+# Nota: Python 3.8+ requerido
