@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow.svg)
 
-**Um compilador completo implementado em Python**
+**Um compilador completo implementado em Python para fins educacionais**
 
 [Características](#-características) •
 [Instalação](#-instalação) •
@@ -19,17 +19,23 @@
 
 ---
 
-## 👥 Desenvolvedores
-[Lucas Farias]([githu.com/Kl4uz](https://github.com/Kl4uz))
-[José Lucas]([https://github.com/lalisalix](https://github.com/lalisalix))
-[Ester Arraiz]([https://github.com/esterarraiz](https://github.com/esterarraiz))
-[Henrique Noronha]([https://github.com/henrique-noronha](https://github.com/henrique-noronha))
-[Laura Barbosa]([https://github.com/tinywin](https://github.com/tinywin))
-
----
 ## 📚 Sobre o Projeto
 
 Este é um **mini-compilador acadêmico** desenvolvido para a disciplina de Compiladores. O projeto implementa todas as fases clássicas de um compilador, desde a análise léxica até a geração de código assembly, seguindo a arquitetura pipeline moderna.
+
+---
+
+## 👥 Equipe
+
+Este projeto foi desenvolvido por:
+
+- **Lucas Farias** ([@Kl4uz](https://github.com/Kl4uz)) 
+- **José Lucas** ([@lalisalix](https://github.com/lalisalix)) 
+- **Ester Arraiz** ([@esterarraiz](https://github.com/esterarraiz))
+- **Laura Barbosa** ([@tinywin](https://github.com/tinywin)) 
+- **Henrique Noronha** ([@henrique-noronha](https://github.com/henrique-noronha)) 
+
+---
 
 ### 🎯 Objetivos
 
@@ -685,25 +691,7 @@ Detalhes sobre runtime stack: [`docs/ETAPA7_AMBIENTES_EXECUCAO.md`](docs/ETAPA7_
 
 ---
 
-## 👥 Equipe
 
-Este projeto foi desenvolvido por:
-
-- **Lucas Farias** ([@Kl4uz](https://github.com/Kl4uz)) - Pipeline e Integração
-- **Lalisa** - Front-end (Léxico, Sintático, AST)
-- **Ester Araiz** - Análise Semântica e Tabela de Símbolos
-- **Laura** - Código Intermediário e Otimizações
-- **Henrique Noronha** - Geração de Assembly e Runtime
-
-### Contribuindo
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
----
 
 ## 📝 Licença
 
