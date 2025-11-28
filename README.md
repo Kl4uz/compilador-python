@@ -136,7 +136,7 @@ pip install -r requirements.txt
 
 4. **Verifique a instalação**
 ```bash
-python src/main.py --version
+python run.py --version
 ```
 
 ---
@@ -152,12 +152,12 @@ O compilador oferece **3 modos** de uso diferentes:
 Compile código diretamente no terminal usando a flag `-e`:
 
 ```bash
-python src/main.py -e "x = 5 + 3; print(x);"
+python run.py -e "x = 5 + 3; print(x);"
 ```
 
 **Exemplo com saída:**
 ```bash
-$ python src/main.py -e "int x = 10 + 5;"
+$ python run.py -e "int x = 10 + 5;"
 
 🔍 [1/7] Análise Léxica...
    ✓ 7 tokens gerados
@@ -182,12 +182,12 @@ $ python src/main.py -e "int x = 10 + 5;"
 Compile um arquivo de código usando a flag `-f`:
 
 ```bash
-python src/main.py -f examples/hello_world.txt
+python run.py -f examples/hello_world.txt
 ```
 
 **Exemplo:**
 ```bash
-$ python src/main.py -f examples/functions.txt
+$ python run.py -f examples/functions.txt
 
 📄 Compilando arquivo: examples/functions.txt
 
@@ -204,7 +204,7 @@ $ python src/main.py -f examples/functions.txt
 Execute sem argumentos para entrar no modo interativo:
 
 ```bash
-python src/main.py
+python run.py
 ```
 
 ```
@@ -233,17 +233,17 @@ Até logo! 👋
 
 | Flag | Descrição | Exemplo |
 |------|-----------|---------|
-| `-e, --expr` | Compila expressão inline | `python src/main.py -e "x = 5;"` |
-| `-f, --file` | Compila arquivo | `python src/main.py -f code.txt` |
-| `-v, --verbose` | Modo verboso (detalhado) | `python src/main.py -f code.txt -v` |
-| `-q, --quiet` | Modo silencioso | `python src/main.py -f code.txt -q` |
-| `-o, --output` | Salva assembly em arquivo | `python src/main.py -f code.txt -o out.asm` |
-| `--no-optimize` | Desativa otimizações | `python src/main.py -e "x=2*3;" --no-optimize` |
-| `--show-tokens` | Mostra tokens gerados | `python src/main.py -e "x=5;" --show-tokens` |
-| `--show-ast` | Mostra AST gerada | `python src/main.py -e "x=5;" --show-ast` |
-| `--show-ir` | Mostra código intermediário | `python src/main.py -e "x=5;" --show-ir` |
-| `--version` | Mostra versão | `python src/main.py --version` |
-| `--help` | Mostra ajuda | `python src/main.py --help` |
+| `-e, --expr` | Compila expressão inline | `python run.py -e "x = 5;"` |
+| `-f, --file` | Compila arquivo | `python run.py -f code.txt` |
+| `-v, --verbose` | Modo verboso (detalhado) | `python run.py -f code.txt -v` |
+| `-q, --quiet` | Modo silencioso | `python run.py -f code.txt -q` |
+| `-o, --output` | Salva assembly em arquivo | `python run.py -f code.txt -o out.asm` |
+| `--no-optimize` | Desativa otimizações | `python run.py -e "x=2*3;" --no-optimize` |
+| `--show-tokens` | Mostra tokens gerados | `python run.py -e "x=5;" --show-tokens` |
+| `--show-ast` | Mostra AST gerada | `python run.py -e "x=5;" --show-ast` |
+| `--show-ir` | Mostra código intermediário | `python run.py -e "x=5;" --show-ir` |
+| `--version` | Mostra versão | `python run.py --version` |
+| `--help` | Mostra ajuda | `python run.py --help` |
 
 ### Exemplos de Uso Avançado
 
@@ -252,7 +252,7 @@ Até logo! 👋
 Mostra todos os passos da compilação:
 
 ```bash
-python src/main.py -f examples/hello_world.txt -v
+python run.py -f examples/hello_world.txt -v
 ```
 
 **Saída:**
@@ -291,7 +291,7 @@ program
 Mostra apenas erros (útil para CI/CD):
 
 ```bash
-python src/main.py -f examples/hello_world.txt -q
+python run.py -f examples/hello_world.txt -q
 ```
 
 **Saída apenas se houver erro:**
@@ -302,7 +302,7 @@ python src/main.py -f examples/hello_world.txt -q
 #### 💾 Salvar Assembly em Arquivo
 
 ```bash
-python src/main.py -f examples/functions.txt -o output.asm
+python run.py -f examples/functions.txt -o output.asm
 ```
 
 Gera arquivo `output.asm`:
@@ -321,29 +321,29 @@ HALT
 
 Ver apenas os tokens:
 ```bash
-python src/main.py -e "x = 5 + 3;" --show-tokens
+python run.py -e "x = 5 + 3;" --show-tokens
 ```
 
 Ver apenas a AST:
 ```bash
-python src/main.py -e "x = 5 + 3;" --show-ast
+python run.py -e "x = 5 + 3;" --show-ast
 ```
 
 Ver apenas o código intermediário (TAC):
 ```bash
-python src/main.py -e "x = 5 + 3;" --show-ir
+python run.py -e "x = 5 + 3;" --show-ir
 ```
 
 Ver tudo:
 ```bash
-python src/main.py -e "x = 5 + 3;" --show-tokens --show-ast --show-ir -v
+python run.py -e "x = 5 + 3;" --show-tokens --show-ast --show-ir -v
 ```
 
 #### ⚙️ Comparar Com/Sem Otimização
 
 Sem otimização:
 ```bash
-python src/main.py -e "x = 2 * 3;" --no-optimize --show-ir
+python run.py -e "x = 2 * 3;" --no-optimize --show-ir
 ```
 ```
 TAC Gerado:
@@ -353,7 +353,7 @@ x = t1
 
 Com otimização (padrão):
 ```bash
-python src/main.py -e "x = 2 * 3;" --show-ir
+python run.py -e "x = 2 * 3;" --show-ir
 ```
 ```
 TAC Otimizado:
@@ -480,7 +480,7 @@ int main() {
 
 **Execução:**
 ```bash
-python src/main.py -f examples/hello_world.txt
+python run.py -f examples/hello_world.txt
 ```
 
 **Assembly Gerado:**
@@ -509,7 +509,7 @@ int main() {
 
 **Execução:**
 ```bash
-python src/main.py -f examples/functions.txt -v
+python run.py -f examples/functions.txt -v
 ```
 
 **TAC Gerado:**
@@ -542,7 +542,7 @@ int main() {
 
 **Sem otimização:**
 ```bash
-python src/main.py -f examples/optimization.txt --no-optimize --show-ir
+python run.py -f examples/optimization.txt --no-optimize --show-ir
 ```
 ```
 TAC:
@@ -554,7 +554,7 @@ PRINT x
 
 **Com otimização (padrão):**
 ```bash
-python src/main.py -f examples/optimization.txt --show-ir
+python run.py -f examples/optimization.txt --show-ir
 ```
 ```
 TAC Otimizado:
@@ -587,7 +587,7 @@ int main() {
 
 **Execução:**
 ```bash
-python src/main.py -f examples/control_flow.txt
+python run.py -f examples/control_flow.txt
 ```
 
 **Saída:**
@@ -634,7 +634,7 @@ O compilador detecta e reporta diversos tipos de erros:
 
 ### Erros Léxicos
 ```bash
-$ python src/main.py -e "int x = @;"
+$ python run.py -e "int x = @;"
 
 ❌ ERRO LÉXICO (linha 1, coluna 9):
    Caractere inválido: '@'
@@ -642,7 +642,7 @@ $ python src/main.py -e "int x = @;"
 
 ### Erros Sintáticos
 ```bash
-$ python src/main.py -e "int x = 5"
+$ python run.py -e "int x = 5"
 
 ❌ ERRO SINTÁTICO (linha 1):
    Esperado ';' após declaração
@@ -650,14 +650,14 @@ $ python src/main.py -e "int x = 5"
 
 ### Erros Semânticos
 ```bash
-$ python src/main.py -e "x = y + 5;"
+$ python run.py -e "x = y + 5;"
 
 ❌ ERRO SEMÂNTICO (linha 1):
    Variável 'y' não declarada
 ```
 
 ```bash
-$ python src/main.py -e "int x = 5; x = 10 + 20 + 30;"
+$ python run.py -e "int x = 5; x = 10 + 20 + 30;"
 
 ❌ ERRO SEMÂNTICO (linha 1):
    Variável 'x' já declarada neste escopo
