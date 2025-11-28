@@ -274,22 +274,6 @@ find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null
 python test_compiler.py
 ```
 
-## 📦 Git (se necessário)
-
-```bash
-# Commit das mudanças
-git add compiler/ test_compiler.py demo_completo.py *.md
-git commit -m "feat: reestruturação completa - arquitetura modular"
-
-# Push
-git push origin main
-
-# Ver status
-git status
-
-# Ver diff
-git diff
-```
 
 ## 🎯 Checklist Pré-Entrega
 

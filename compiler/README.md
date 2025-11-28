@@ -1,6 +1,4 @@
-# 📁 Compiler - Estrutura Modular
 
-Estrutura organizada conforme recomendação do professor.
 
 ## 📂 Estrutura
 
@@ -96,4 +94,3 @@ if result['success']:
 
 ---
 
-**Estrutura modular conforme metodologia do professor! 🎓**
