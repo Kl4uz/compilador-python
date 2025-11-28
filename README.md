@@ -1,574 +1,739 @@
-# 🚀 Mini-Compilador Python# 🚀 Mini Compilador em Python
+# 🔧 Mini-Compilador em Python
 
+<div align="center">
 
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow.svg)
 
-Compilador didático implementado **conforme metodologia ensinada em aula**.Bem-vindo ao repositório do **Mini Compilador em Python**, um projeto acadêmico completo desenvolvido para a disciplina de Compiladores. 
+**Um compilador completo implementado em Python**
 
+[Características](#-características) •
+[Instalação](#-instalação) •
+[Uso](#-uso) •
+[Arquitetura](#-arquitetura) •
+[Exemplos](#-exemplos) •
+[Equipe](#-equipe)
 
+</div>
 
-## 👥 EquipeEste projeto implementa um **compilador completo** para uma mini-linguagem C-like, cobrindo todas as fases: **análise léxica, sintática, semântica, geração de código intermediário, otimizações e geração de assembly**.
+---
 
-- Lucas Farias
+## 👥 Desenvolvedores
+[Lucas Farias]([githu.com/Kl4uz](https://github.com/Kl4uz))
+[José Lucas]([https://github.com/lalisalix](https://github.com/lalisalix))
+[Ester Arraiz]([https://github.com/esterarraiz](https://github.com/esterarraiz))
+[Henrique Noronha]([https://github.com/henrique-noronha](https://github.com/henrique-noronha))
+[Laura Barbosa]([https://github.com/tinywin](https://github.com/tinywin))
 
-- José Lucas  ## 📚 Sobre o Projeto
+---
+## 📚 Sobre o Projeto
 
-- Ester Araiz
+Este é um **mini-compilador acadêmico** desenvolvido para a disciplina de Compiladores. O projeto implementa todas as fases clássicas de um compilador, desde a análise léxica até a geração de código assembly, seguindo a arquitetura pipeline moderna.
 
-- Henrique NoronhaCompilador educacional que transforma código fonte em assembly MIPS-like, passando por todas as etapas clássicas de compilação com arquitetura modular e bem documentada.
+### 🎯 Objetivos
 
+- ✅ Implementar um **analisador léxico** (tokenização)
+- ✅ Construir um **analisador sintático** (parser)
+- ✅ Gerar uma **Árvore Sintática Abstrata** (AST)
+- ✅ Realizar **análise semântica** (tipos e escopos)
+- ✅ Gerar **código intermediário** (TAC - Three-Address Code)
+- ✅ Aplicar **otimizações** (constant folding, dead code elimination)
+- ✅ Gerar **código assembly** final
+- ✅ Simular **ambientes de execução** (runtime stack)
 
+---
 
-## 📂 Estrutura
+## 🌟 Características
 
+### ✨ Funcionalidades Principais
+
+| Recurso | Status | Descrição |
+|---------|--------|-----------|
+| **Análise Léxica** | ✅ | Tokenização com suporte a funções, operadores e palavras-chave |
+| **Análise Sintática** | ✅ | Parser completo com detecção de erros |
+| **AST** | ✅ | Construção de árvore sintática abstrata |
+| **Análise Semântica** | ✅ | Verificação de tipos e escopos |
+| **Tabela de Símbolos** | ✅ | Gerenciamento de escopos aninhados |
+| **Código Intermediário** | ✅ | Geração de TAC (Three-Address Code) |
+| **Otimização** | ✅ | Constant folding, dead code elimination, peephole |
+| **Geração de Assembly** | ✅ | Código assembly otimizado |
+| **Runtime Stack** | ✅ | Simulação de pilha de ativação |
+| **Funções** | ✅ | Suporte completo a funções com parâmetros |
+
+### 📋 Linguagem Suportada
+
+```c
+// Exemplo de código suportado
+int soma(int a, int b) {
+    int resultado = a + b;
+    return resultado;
+}
+
+int main() {
+    int x = 10;
+    int y = 20;
+    int total = soma(x, y);
+    print(total);
+    
+    if (total > 25) {
+        print(1);
+    } else {
+        print(0);
+    }
+    
+    return 0;
+}
 ```
-compiler/
-│
-├── lexer.py           # Análise Léxica (Tokens)
-├── parser.py          # ✅ Análise Sintática LL(1) Top-Down
-├── main.py            # Pipeline Integrado
-│
-├── ast/               # Árvore Sintática Abstrata
-│   ├── ast_builder.py     # Construtor da AST
-│   ├── analyzer.py        # Análise Semântica
-│   └── symbol_table.py    # Tabela de Símbolos
-│
-├── ir/                # Código Intermediário
-│   ├── ir.py              # TAC + Quádruplas
-│   └── ir_generator.py    # Gerador de IR
-│
-├── optimizer/         # Otimizações
-│   ├── optimizer.py       # ✅ CSE, CF, DCE, CP
-│   └── peephole.py        # Peephole + Algebraic Simplification
-│
-└── codegen/           # Geração de Código
-    ├── codegen.py         # Coordenador
-    └── assembly.py        # Assembly MIPS-like
+
+**Suporte a:**
+- ✅ Tipos: `int`
+- ✅ Variáveis locais e globais
+- ✅ Funções com parâmetros e retorno
+- ✅ Expressões aritméticas: `+`, `-`, `*`, `/`
+- ✅ Operadores relacionais: `<`, `>`, `==`, `!=`, `<=`, `>=`
+- ✅ Estruturas de controle: `if/else`, `while`
+- ✅ Impressão: `print()`
+
+---
+
+## 🚀 Instalação
+
+### Pré-requisitos
+
+- **Python 3.8+**
+- **pip** (gerenciador de pacotes Python)
+
+### Passo a Passo
+
+1. **Clone o repositório**
+```bash
+git clone https://github.com/Kl4uz/compilador-python.git
+cd compilador-python
 ```
 
+2. **Crie um ambiente virtual** (recomendado)
+```bash
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
 
-## 🎯 Pipeline
-
-```
-Código Fonte
-    ↓
-[lexer.py]      → Tokens
-    ↓
-[parser.py]     → Parse Tree (LL(1) Top-Down)
-    ↓
-[ast/]          → AST + Análise Semântica
-    ↓
-[ir/]           → TAC + Quádruplas
-    ↓
-[optimizer/]    → IR Otimizado (CSE, CF, DCE, etc)
-    ↓
-[codegen/]      → Assembly MIPS-like
+# Windows
+python -m venv venv
+venv\Scripts\activate
 ```
 
+3. **Instale as dependências**
+```bash
+pip install -r requirements.txt
+```
 
+4. **Verifique a instalação**
+```bash
+python src/main.py --version
+```
 
-## 📊 Pipeline de Compilaçãoif result['success']:
+---
 
-    print("✓ Compilação bem-sucedida!")
+## 💻 Uso
 
-**Conforme metodologia do professor:**    for linha in result['assembly']:
+### 🎯 Modos de Execução
 
-        print(linha)
+O compilador oferece **3 modos** de uso diferentes:
 
-| Fase | Entrada | Saída | Arquivo |else:
+#### 1️⃣ **Modo Expressão** (Compilar diretamente da linha de comando)
 
-|------|---------|-------|---------|    print("✗ Erros:", result['errors'])
-
-| **1. Léxico** | Código fonte | Tokens | `lexer.py` |```
-
-| **2. Sintático LL(1)** | Tokens | Parse Tree | `parser_ll1.py` ✅ |
-
-| **3. AST** | Parse Tree | AST | `ast.py` |#### Via Linha de Comando
-
-| **4. Semântica** | AST | Tabela Símbolos | `analyzer.py` |
-
-| **5. IR** | AST | TAC + Quádruplas | `ir_generator.py` ✅ |```bash
-
-| **6. Otimizações** | IR | IR Otimizado | `optimizer.py` ✅ |# Compilar arquivo
-
-| **7. Assembly** | IR | MIPS-like | `assembly.py` |python compiler/main.py tests/hello_world.txt --verbose
-
-
-
----# Salvar assembly
-
-python compiler/main.py tests/code.txt -o output.asm
-
-## ✅ Implementado Conforme Professor
-
-# Sem otimizações
-
-### ✅ Parser LL(1) Top-Downpython compiler/main.py tests/code.txt --no-optimize
-
-- **Recursive Descent** manual```
-
-- **Lookahead de 1 token**
-
-- Cada não-terminal = função recursiva### Testes
-
-- Arquivo: `compiler/parser_ll1.py`
+Compile código diretamente no terminal usando a flag `-e`:
 
 ```bash
-
-### ✅ Eliminação de Subexpressões Comuns (CSE)# Rodar suite completa de testes
-
-```pythonpython test_compiler.py
-
-# Antes:
-
-t1 = a + b# Testar módulo individual
-
-t2 = a + b  # redundante!python compiler/lexer.py
-
-python compiler/parser.py
-
-# Depois (CSE):python compiler/optimizer.py
-
-t1 = a + b```
-
-t2 = t1     # reutiliza!
-
-```## 📦 Dependências
-
-
-
-### ✅ Formato Quádruplas- **Python 3.8+**: Linguagem principal
-
-```- **PLY (Python Lex-Yacc) 3.11**: Análise léxica e sintática
-
-(operação, arg1, arg2, resultado)- **pytest**: Testes (opcional)
-
-(*, b, 2, t0)
-
-(+, a, t0, t1)```bash
-
-(assign, t1, -, x)pip install ply
-
-``````
-
-
-
-### ✅ Todas as Otimizações## 🔄 Pipeline de Compilação
-
-1. **CSE** - Eliminação de Subexpressões Comuns
-
-2. **Constant Folding** - Avalia em tempo de compilação```
-
-3. **Algebraic Simplification** - x*1→x, x+0→x, x*0→0   Código Fonte (.txt)
-
-4. **Peephole** - x*2→x<<1         ↓
-
-5. **Copy Propagation** - Propaga cópias   [1] LEXER (lexer.py)
-
-6. **Dead Code Elimination** - Remove código morto       → Tokenização
-
-         ↓
-
----   [2] PARSER (parser.py)
-
-       → Parse Tree (BNF)
-
-## 📖 Exemplo Completo         ↓
-
-   [3] AST Builder (ast.py)
-
-### Entrada:       → Abstract Syntax Tree
-
-```c         ↓
-
-int x = a + b * 2;   [4] ANALYZER (analyzer.py)
-
-```       → Análise Semântica
-
-       → Symbol Table
-
-### Saída (Verbose):         ↓
-
-   [5] IR GENERATOR (ir_generator.py)
-
-```       → Three-Address Code (TAC)
-
-✅ COMPILAÇÃO BEM-SUCEDIDA!         ↓
-
-   [6] OPTIMIZER (optimizer.py + peephole.py)
-
-━━━ TOKENS ━━━       → Constant Folding
-
-28 tokens: INT, ID, EQUALS, ID, PLUS, ID, TIMES, NUMBER, SEMICOLON...       → Dead Code Elimination
-
-       → Copy Propagation
-
-━━━ TABELA DE SÍMBOLOS ━━━       → Peephole Optimization
-
-main: function (params=0)         ↓
-
-  a: int   [7] ASSEMBLY GENERATOR (assembly.py)
-
-  b: int       → Código MIPS-like
-
-  x: int         ↓
-
-    Assembly (.asm)
-
-━━━ CÓDIGO INTERMEDIÁRIO (TAC) ━━━```
-
-0: begin_func main
-
-1: a = 7## ✅ Etapas Implementadas
-
-2: b = 8
-
-3: t0 = b * 2| Etapa | Descrição | Status | Módulo |
-
-4: t1 = a + t0|-------|-----------|--------|--------|
-
-5: x = t1| **2** | Alfabeto e definição de tokens | ✅ Completo | `lexer.py` |
-
-6: return 0| **3** | Análise léxica (tokenização) | ✅ Completo | `lexer.py` |
-
-7: end_func main| **4** | Análise sintática (parser BNF) | ✅ Completo | `parser.py` |
-
-| **5** | Análise semântica | ✅ Completo | `analyzer.py` |
-
-━━━ QUÁDRUPLAS ━━━| **6** | Geração de código intermediário (TAC) | ✅ Completo | `ir_generator.py` |
-
-0: (begin_func, main, -, -)| **7** | Ambientes de execução + Assembly | ✅ Completo | `assembly.py` |
-
-1: (assign, 7, -, a)| **Extra** | Otimizações | ✅ Completo | `optimizer.py`, `peephole.py` |
-
-2: (assign, 8, -, b)
-
-3: (*, b, 2, t0)## 🎯 Funcionalidades
-
-4: (+, a, t0, t1)
-
-5: (assign, t1, -, x)### Análise Léxica (Etapa 2-3)
-
-6: (return, 0, -, -)- ✅ Reconhecimento de tokens (palavras-chave, operadores, identificadores, números)
-
-7: (end_func, main, -, -)- ✅ Tratamento de espaços em branco e comentários
-
-- ✅ Detecção de erros léxicos
-
-━━━ ASSEMBLY (MIPS-like) ━━━
-
-main:### Análise Sintática (Etapa 4)
-
-  addi $sp, $sp, -4- ✅ Parser baseado em gramática BNF
-
-  sw $fp, 0($sp)- ✅ Precedência de operadores
-
-  move $fp, $sp- ✅ Suporte a declarações de função
-
-  li $t0, 8- ✅ Expressões aritméticas
-
-  sw $t0, b- ✅ Detecção de erros sintáticos
-
-  li $t1, 7
-
-  sw $t1, a### Análise Semântica (Etapa 5)
-
-  mul $t2, $t0, 2- ✅ Verificação de tipos
-
-  add $t3, $t1, $t2- ✅ Verificação de escopo (variáveis e funções)
-
-  move $t4, $t3- ✅ Detecção de variáveis não declaradas
-
-  sw $t4, x- ✅ Verificação de parâmetros de função
-
-  move $v0, 0- ✅ Validação de número de argumentos
-
-  lw $fp, 0($sp)
-
-  addi $sp, $sp, 4### Geração de Código (Etapa 6-7)
-
-  jr $ra- ✅ Código intermediário (Three-Address Code)
-
-```- ✅ Otimizações:
-
-  - Constant folding (5+3 → 8)
-
----  - Dead code elimination
-
-  - Copy propagation
-
-## 🧪 Testes Rápidos  - Peephole (x+0 → x, x*1 → x)
-
-  - Simplificação algébrica (x-x → 0)
-
-```bash- ✅ Geração de assembly MIPS-like
-
-# Teste básico- ✅ Alocação de registradores
-
-python run.py -f tests/simples.txt- ✅ Gerenciamento de pilha (stack frames)
-
-
-
-# Teste CSE (vê otimização acontecendo!)### Ambientes de Execução (Etapa 7)
-
-python run.py -f tests/teste_cse.txt- ✅ Activation Records completos
-
-- ✅ Runtime Stack para chamadas de função
-
-# Exemplo do professor- ✅ Tabela de símbolos com escopos aninhados
-
-python run.py -f tests/exemplo_professor.txt- ✅ Suporte a chamadas recursivas e aninhadas
-
-- ✅ Links dinâmicos e estáticos
-
-# Teste com expressões complexas
-
-python demos/teste_expressoes.py## 📖 Documentação
-
+python src/main.py -e "x = 5 + 3; print(x);"
 ```
 
-- **`compiler/README.md`**: Documentação detalhada da arquitetura modular
+**Exemplo com saída:**
+```bash
+$ python src/main.py -e "int x = 10 + 5;"
 
----- **`docs/GUIA_DE_ESTUDOS.md`**: Guia completo de estudos (500+ linhas)
+🔍 [1/7] Análise Léxica...
+   ✓ 7 tokens gerados
+🌳 [2/7] Análise Sintática...
+   ✓ Árvore de parsing construída
+🎯 [3/7] Construção da AST...
+   ✓ AST gerada
+🔬 [4/7] Análise Semântica...
+   ✓ Análise semântica concluída
+⚙️  [5/7] Geração de Código Intermediário...
+   ✓ 2 instruções TAC geradas
+⚡ [6/7] Otimização...
+   ✓ Otimizado: 2 → 1 instruções
+🎯 [7/7] Geração de Assembly...
+   ✓ 3 instruções assembly geradas
 
-- **`docs/ETAPA7_AMBIENTES_EXECUCAO.md`**: Documentação da Etapa 7
+✅ Compilação bem-sucedida!
+```
 
-## 📚 Documentação Adicional- **Cada módulo**: Possui docstrings e exemplos de teste
+#### 2️⃣ **Modo Arquivo** (Compilar de arquivo)
 
+Compile um arquivo de código usando a flag `-f`:
 
+```bash
+python src/main.py -f examples/hello_world.txt
+```
 
-Veja `docs_projeto/` para:---
+**Exemplo:**
+```bash
+$ python src/main.py -f examples/functions.txt
 
-- **GUIA_RAPIDO.md** - Referência rápida
+📄 Compilando arquivo: examples/functions.txt
 
-- **COMANDOS.md** - Lista de comandos úteis## Licenca
+🔍 [1/7] Análise Léxica...
+   ✓ 45 tokens gerados
+🌳 [2/7] Análise Sintática...
+   ✓ Árvore de parsing construída
+...
+✅ Compilação bem-sucedida!
+```
 
-- **README_OLD.md** - Documentação anterior completa
+#### 3️⃣ **Modo Interativo** (REPL)
 
-Este projeto esta licenciado sob a MIT license.
+Execute sem argumentos para entrar no modo interativo:
 
----
+```bash
+python src/main.py
+```
 
-## Gramatica - Forma BNF
+```
+╔════════════════════════════════════════════╗
+║     MINI-COMPILADOR PYTHON v1.0           ║
+║     Modo Interativo (REPL)                ║
+╚════════════════════════════════════════════╝
 
-## 🎯 Metodologia Aplicada
+Digite seu código (ou 'exit' para sair):
+>>> int x = 10;
+✓ Compilado com sucesso!
 
-```bnf
+>>> print(x);
+✓ Compilado com sucesso!
+>>> OUTPUT: 10
 
-### Análise Léxica
-
-- Expressões Regulares (ER)<program> ::= <stmt_list>
-
-- PLY gera AFD automaticamente
-
-<stmt_list> ::= <stmt> | <stmt> <stmt_list>
-
-### Análise Sintática
-
-- **LL(1) Top-Down** ✅<stmt> ::= <assign_stmt> 
-
-- **Recursive Descent** ✅         | <if_stmt> 
-
-- **1 token de lookahead** ✅         | <while_stmt> 
-
-         | <print_stmt>
-
-### Código Intermediário
-
-- **Three-Address Code (TAC)** ✅<assign_stmt> ::= <id> "=" <expr> ";"
-
-- **Quádruplas** ✅
-
-<if_stmt> ::= "if" "(" <expr> ")" "{" <stmt_list> "}" 
-
-### Otimizações            | "if" "(" <expr> ")" "{" <stmt_list> "}" "else" "{" <stmt_list> "}"
-
-- **CSE** (Common Subexpression Elimination) ✅
-
-- **Constant Folding** ✅<while_stmt> ::= "while" "(" <expr> ")" "{" <stmt_list> "}"
-
-- **Dead Code Elimination** ✅
-
-- **Copy Propagation** ✅<print_stmt> ::= "print" "(" <expr> ")" ";"
-
-- **Algebraic Simplification** ✅
-
-<expr> ::= <term> | <expr> "+" <term> | <expr> "-" <term>
-
-### Assembly
-
-- **MIPS-like**<term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
-
-- **LOAD/MUL/ADD/STORE** ✅
-
-<factor> ::= <number> | <id> | "(" <expr> ")"
+>>> exit
+Até logo! 👋
+```
 
 ---
 
-<id> ::= <letter> { <letter> | <digit> }
+## 🎛️ Flags e Opções
+
+### Flags Principais
+
+| Flag | Descrição | Exemplo |
+|------|-----------|---------|
+| `-e, --expr` | Compila expressão inline | `python src/main.py -e "x = 5;"` |
+| `-f, --file` | Compila arquivo | `python src/main.py -f code.txt` |
+| `-v, --verbose` | Modo verboso (detalhado) | `python src/main.py -f code.txt -v` |
+| `-q, --quiet` | Modo silencioso | `python src/main.py -f code.txt -q` |
+| `-o, --output` | Salva assembly em arquivo | `python src/main.py -f code.txt -o out.asm` |
+| `--no-optimize` | Desativa otimizações | `python src/main.py -e "x=2*3;" --no-optimize` |
+| `--show-tokens` | Mostra tokens gerados | `python src/main.py -e "x=5;" --show-tokens` |
+| `--show-ast` | Mostra AST gerada | `python src/main.py -e "x=5;" --show-ast` |
+| `--show-ir` | Mostra código intermediário | `python src/main.py -e "x=5;" --show-ir` |
+| `--version` | Mostra versão | `python src/main.py --version` |
+| `--help` | Mostra ajuda | `python src/main.py --help` |
+
+### Exemplos de Uso Avançado
+
+#### 📊 Modo Verbose (Detalhado)
+
+Mostra todos os passos da compilação:
+
+```bash
+python src/main.py -f examples/hello_world.txt -v
+```
+
+**Saída:**
+```
+============================================================
+📄 CÓDIGO FONTE
+============================================================
+int main() {
+    int x = 10;
+    print(x);
+    return 0;
+}
+
+============================================================
+🔍 FASE 1: ANÁLISE LÉXICA
+============================================================
+Token 1: INT (type: keyword)
+Token 2: MAIN (type: identifier)
+Token 3: LPAREN (type: delimiter)
+...
+
+============================================================
+🌳 FASE 2: ÁRVORE SINTÁTICA
+============================================================
+program
+├── function_def (main)
+│   └── block
+│       ├── declaration (x)
+│       ├── print_stmt
+│       └── return_stmt
+...
+```
+
+#### 🤫 Modo Quiet (Silencioso)
+
+Mostra apenas erros (útil para CI/CD):
+
+```bash
+python src/main.py -f examples/hello_world.txt -q
+```
+
+**Saída apenas se houver erro:**
+```
+❌ ERRO na linha 5: Variável 'y' não declarada
+```
+
+#### 💾 Salvar Assembly em Arquivo
+
+```bash
+python src/main.py -f examples/functions.txt -o output.asm
+```
+
+Gera arquivo `output.asm`:
+```asm
+; Código gerado pelo Mini-Compilador v1.0
+; Data: 2025-11-28 14:30:00
+
+LOAD R1, 10
+STORE x, R1
+LOAD R1, x
+PRINT R1
+HALT
+```
+
+#### 🔍 Visualizar Fases Intermediárias
+
+Ver apenas os tokens:
+```bash
+python src/main.py -e "x = 5 + 3;" --show-tokens
+```
+
+Ver apenas a AST:
+```bash
+python src/main.py -e "x = 5 + 3;" --show-ast
+```
+
+Ver apenas o código intermediário (TAC):
+```bash
+python src/main.py -e "x = 5 + 3;" --show-ir
+```
+
+Ver tudo:
+```bash
+python src/main.py -e "x = 5 + 3;" --show-tokens --show-ast --show-ir -v
+```
+
+#### ⚙️ Comparar Com/Sem Otimização
+
+Sem otimização:
+```bash
+python src/main.py -e "x = 2 * 3;" --no-optimize --show-ir
+```
+```
+TAC Gerado:
+t1 = 2 * 3
+x = t1
+```
+
+Com otimização (padrão):
+```bash
+python src/main.py -e "x = 2 * 3;" --show-ir
+```
+```
+TAC Otimizado:
+x = 6
+```
+
+---
+
+## 🏗️ Arquitetura
+
+### Pipeline do Compilador
+
+```
+┌─────────────────┐
+│  Código Fonte   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 1. Léxico       │ ─────► Tokens
+│    (lexer.py)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 2. Sintático    │ ─────► Parse Tree
+│    (parser.py)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 3. AST Builder  │ ─────► AST
+│ (ast_builder.py)│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 4. Semântico    │ ─────► AST Anotada
+│  (semantic.py)  │        + Tabela Símbolos
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 5. Gerador IR   │ ─────► TAC
+│(ir_generator.py)│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 6. Otimizador   │ ─────► TAC Otimizado
+│ (optimizer.py)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 7. Gerador Asm  │ ─────► Assembly
+│  (codegen.py)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Assembly Final │
+└─────────────────┘
+```
+
+### 📁 Estrutura de Diretórios
+
+```
+compilador-python/
+├── README.md                    # Este arquivo
+├── requirements.txt             # Dependências Python
+├── .gitignore                  # Arquivos ignorados
+│
+├── src/                        # 📂 Código fonte
+│   ├── __init__.py
+│   ├── main.py                 # 🎯 Ponto de entrada (CLI)
+│   ├── compiler.py             # 🔧 Pipeline principal
+│   ├── lexer.py                # 📝 Analisador léxico
+│   ├── parser.py               # 🌳 Analisador sintático
+│   ├── ast_builder.py          # 🎯 Construtor de AST
+│   ├── semantic.py             # 🔬 Análise semântica
+│   ├── symbol_table.py         # 📊 Tabela de símbolos
+│   ├── ir_generator.py         # ⚙️  Gerador de código intermediário
+│   ├── optimizer.py            # ⚡ Otimizador
+│   ├── codegen.py              # 🎯 Gerador de assembly
+│   ├── runtime.py              # 🏃 Runtime stack simulation
+│   └── interpreter.py          # 🎮 Interpretador TAC
+│
+├── tests/                      # 🧪 Testes
+│   ├── test_lexer.py
+│   ├── test_parser.py
+│   ├── test_semantic.py
+│   ├── test_ir.py
+│   ├── test_optimizer.py
+│   ├── test_codegen.py
+│   └── test_pipeline.py        # Teste de integração
+│
+├── examples/                   # 📚 Exemplos de código
+│   ├── hello_world.txt         # Exemplo básico
+│   ├── functions.txt           # Funções
+│   ├── control_flow.txt        # If/While
+│   └── optimization.txt        # Demonstração de otimizações
+│
+└── docs/                       # 📖 Documentação
+    ├── grammar.md              # Gramática da linguagem
+    ├── pipeline.md             # Arquitetura do pipeline
+    └── ETAPA7_AMBIENTES_EXECUCAO.md
+```
+
+---
+
+## 📖 Exemplos
+
+### Exemplo 1: Hello World
+
+**Arquivo:** `examples/hello_world.txt`
+```c
+int main() {
+    int x = 42;
+    print(x);
+    return 0;
+}
+```
+
+**Execução:**
+```bash
+python src/main.py -f examples/hello_world.txt
+```
+
+**Assembly Gerado:**
+```asm
+LOAD R1, 42
+STORE x, R1
+LOAD R1, x
+PRINT R1
+HALT
+```
+
+### Exemplo 2: Função com Parâmetros
+
+**Arquivo:** `examples/functions.txt`
+```c
+int soma(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int resultado = soma(10, 20);
+    print(resultado);
+    return 0;
+}
+```
+
+**Execução:**
+```bash
+python src/main.py -f examples/functions.txt -v
+```
+
+**TAC Gerado:**
+```
+FUNCTION soma
+PARAM a
+PARAM b
+t1 = a + b
+RETURN t1
+END_FUNCTION
+
+FUNCTION main
+t2 = CALL soma, 10, 20
+resultado = t2
+PRINT resultado
+RETURN 0
+END_FUNCTION
+```
+
+### Exemplo 3: Otimização (Constant Folding)
+
+**Código:**
+```c
+int main() {
+    int x = 2 * 3 + 5;
+    print(x);
+    return 0;
+}
+```
+
+**Sem otimização:**
+```bash
+python src/main.py -f examples/optimization.txt --no-optimize --show-ir
+```
+```
+TAC:
+t1 = 2 * 3
+t2 = t1 + 5
+x = t2
+PRINT x
+```
+
+**Com otimização (padrão):**
+```bash
+python src/main.py -f examples/optimization.txt --show-ir
+```
+```
+TAC Otimizado:
+x = 11
+PRINT x
+```
+
+### Exemplo 4: Estruturas de Controle
+
+**Arquivo:** `examples/control_flow.txt`
+```c
+int main() {
+    int x = 10;
+    
+    if (x > 5) {
+        print(1);
+    } else {
+        print(0);
+    }
+    
+    int i = 0;
+    while (i < 3) {
+        print(i);
+        i = i + 1;
+    }
+    
+    return 0;
+}
+```
+
+**Execução:**
+```bash
+python src/main.py -f examples/control_flow.txt
+```
+
+**Saída:**
+```
+>>> OUTPUT: 1
+>>> OUTPUT: 0
+>>> OUTPUT: 1
+>>> OUTPUT: 2
+```
+
+---
+
+## 🧪 Testes
+
+### Executar Todos os Testes
+
+```bash
+pytest tests/ -v
+```
+
+### Executar Testes Específicos
+
+```bash
+# Testar apenas o lexer
+pytest tests/test_lexer.py -v
+
+# Testar apenas o pipeline completo
+pytest tests/test_pipeline.py -v
+```
+
+### Cobertura de Testes
+
+```bash
+pytest tests/ --cov=src --cov-report=html
+```
+
+Abre o relatório: `open htmlcov/index.html`
+
+---
+
+## 🐛 Tratamento de Erros
+
+O compilador detecta e reporta diversos tipos de erros:
+
+### Erros Léxicos
+```bash
+$ python src/main.py -e "int x = @;"
+
+❌ ERRO LÉXICO (linha 1, coluna 9):
+   Caractere inválido: '@'
+```
+
+### Erros Sintáticos
+```bash
+$ python src/main.py -e "int x = 5"
+
+❌ ERRO SINTÁTICO (linha 1):
+   Esperado ';' após declaração
+```
+
+### Erros Semânticos
+```bash
+$ python src/main.py -e "x = y + 5;"
+
+❌ ERRO SEMÂNTICO (linha 1):
+   Variável 'y' não declarada
+```
+
+```bash
+$ python src/main.py -e "int x = 5; x = 10 + 20 + 30;"
+
+❌ ERRO SEMÂNTICO (linha 1):
+   Variável 'x' já declarada neste escopo
+```
+
+---
+
+## 🎓 Documentação Acadêmica
+
+### Gramática da Linguagem
+
+Veja a gramática completa em: [`docs/grammar.md`](docs/grammar.md)
+
+**Resumo:**
+```
+<program>    ::= <stmt_list>
+<stmt_list>  ::= <stmt> | <stmt> <stmt_list>
+<stmt>       ::= <assign_stmt> | <if_stmt> | <while_stmt> | <print_stmt>
+<expr>       ::= <term> (('+' | '-') <term>)*
+<term>       ::= <factor> (('*' | '/') <factor>)*
+<factor>     ::= <number> | <id> | '(' <expr> ')'
+```
+
+### Arquitetura do Pipeline
+
+Documentação detalhada: [`docs/pipeline.md`](docs/pipeline.md)
+
+### Ambientes de Execução (Etapa 7)
+
+Detalhes sobre runtime stack: [`docs/ETAPA7_AMBIENTES_EXECUCAO.md`](docs/ETAPA7_AMBIENTES_EXECUCAO.md)
+
+---
+
+## 👥 Equipe
+
+Este projeto foi desenvolvido por:
+
+- **Lucas Farias** ([@Kl4uz](https://github.com/Kl4uz)) - Pipeline e Integração
+- **Lalisa** - Front-end (Léxico, Sintático, AST)
+- **Ester Araiz** - Análise Semântica e Tabela de Símbolos
+- **Laura** - Código Intermediário e Otimizações
+- **Henrique Noronha** - Geração de Assembly e Runtime
+
+### Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+---
 
 ## 📝 Licença
 
-<number> ::= <digit> { <digit> }
-
-MIT License
-
-<letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-<digit> ::= "0" | "1" | ... | "9"
+## 🔗 Links Úteis
 
-**📚 Projeto Acadêmico - Disciplina de Compiladores**
-
-```
-
-*Implementado conforme metodologia ensinada em aula.*
-
-# Autômato Finito Determinístico - Compilador Linguagem Mínima
-
-## Tokens da Linguagem
-
-- **Palavras-chave**: PRINT, IF, ELSE, WHILE, RETURN, INT
-- **Operadores**: = (atribuição), + (soma)
-- **Delimitadores**: ; (ponto e vírgula), ( ) (parênteses)
-- **Literais**: números inteiros
-- **Identificadores**: variáveis e funções
-
-## Alfabeto de Entrada
-
-- **dígito**: 0-9
-- **letra**: a-z, A-Z
-- **_**: underscore
-- **=**: igual
-- **+**: mais
-- **;**: ponto e vírgula
-- **(**: parêntese esquerdo
-- **)**: parêntese direito
-- **espaço**: espaço, tab, quebra de linha
-- **outro**: qualquer outro caractere
+- 📚 [Documentação Completa](docs/)
+- 🐛 [Reportar Bug](https://github.com/Kl4uz/compilador-python/issues)
+- 💡 [Sugerir Feature](https://github.com/Kl4uz/compilador-python/issues/new)
+- 📖 [Wiki do Projeto](https://github.com/Kl4uz/compilador-python/wiki)
 
 ---
 
-## Tabela de Transições do AFD
+## 📚 Referências
 
-| Estado | dígito | letra | _ | = | + | ; | ( | ) | espaço | outro |
-|--------|--------|-------|---|---|---|---|---|---|---------|-------|
-| **q0** | q_num | q_id | q_id | q_equals | q_plus | q_scolon | q_lparen | q_rparen | q0 | qE |
-| **q_num** | q_num | qE | qE | q0 | q0 | q0 | q0 | q0 | q0 | qE |
-| **q_id** | q_id | q_id | q_id | q0 | q0 | q0 | q0 | q0 | q0 | qE |
-| **q_equals** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
-| **q4** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
-| **q_scolon** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
-| **q_lparen** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
-| **q_rparen** | qE | qE | qE | qE | qE | qE | qE | qE | q0 | qE |
-| **qE** | qE | qE | qE | qE | qE | qE | qE | qE | qE | qE |
+- **Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D.** (2006). *Compilers: Principles, Techniques, and Tools* (2nd ed.). Pearson.
+- **Cooper, K. D., & Torczon, L.** (2011). *Engineering a Compiler* (2nd ed.). Morgan Kaufmann.
+- **Appel, A. W.** (2004). *Modern Compiler Implementation in Java* (2nd ed.). Cambridge University Press.
 
 ---
 
-## Descrição dos Estados
+<div align="center">
 
-### Estados Principais
+**⭐ Se este projeto foi útil, considere dar uma estrela no repositório! ⭐**
 
-- **q0**: Estado inicial (aguardando próximo token)
-- **q1**: Reconhecendo número inteiro
-- **q2**: Reconhecendo identificador/palavra-chave
-- **q3**: Token de atribuição (=)
-- **q4**: Token de soma (+)
-- **q5**: Token ponto e vírgula (;)
-- **q6**: Token parêntese esquerdo (()
-- **q7**: Token parêntese direito ())
-- **qE**: Estado de erro
+Desenvolvido com ❤️ para a disciplina de Compiladores
 
-### Estados Finais e Tokens Gerados
+[⬆ Voltar ao topo](#-mini-compilador-em-python)
 
-| Estado Final | Token Gerado | Descrição |
-|-------------|-------------|-----------|
-| **q1** | TOKEN_NUMBER | Número inteiro |
-| **q2** | TOKEN_ID ou TOKEN_KEYWORD | Identificador ou palavra-chave* |
-| **q3** | TOKEN_ASSIGN | Operador de atribuição |
-| **q4** | TOKEN_PLUS | Operador de soma |
-| **q5** | TOKEN_SEMICOLON | Ponto e vírgula |
-| **q6** | TOKEN_LPAREN | Parêntese esquerdo |
-| **q7** | TOKEN_RPAREN | Parêntese direito |
-
-*Para o estado q2, é necessária verificação adicional para determinar se é palavra-chave.
-
----
-## Associações semânticas
-
-A etapa de tradução dirigida por sintaxe, as ações semânticas implementadas nas regras do
-parser não apenas constroem a AST, mas também podem ser estendidas para incluir
-informações de tipos e escopos, tornando a árvore anotada e apta para análises semânticas
-posteriores. Isso facilita a verificação de tipos, o controle de variáveis e a detecção de
-possíveis erros semânticos, além de preparar a AST para a geração de código.
-
-## Arvore Sintatica Abstrata
-Para a implementação precisamos associar ações semânticas às regras da gramática definidas
-no parser e gerar uma Árvore de Sintaxe Abstrata (AST) anotada com informações de tipos e
-escopos. Abaixo, apresento um artefato com a implementação atualizada do parser, incluindo
-ações semânticas para construir a AST anotada.
-Para o exemplo de código a seguir:
-
-```Python
-
-x = 5 + 3;
-
-print(x * 2);
-```
-
-Teremos a AST gerada:
-
-```cmd
-program {'scope': 'global'}
-
-  assign (x) {'type': 'int', 'scope': 'global'}
-
-    + {'type': 'int'}
-
-      num (5) {'type': 'int'}
-
-      num (3) {'type': 'int'}
-
-  print {'type': 'int', 'scope': 'global'}
-
-    * {'type': 'int'}
-
-      id (x) {'type': 'int', 'scope': 'global'}
-
-      num (2) {'type': 'int'}
-```
-
-Formando (simplificadamente) a AST:
-
-
-## Transformar AST em código Intermediário
-
-Para a geração de código intermediário utilizamos a AST denotada anteriormente em 5.2,
-mas somente para instruções que contém três operadores por enquanto. Dito isto, optamos
-por gerar um TAC, que é um Three-Access-Code, que processa no máximo três operadores
-por vez. Por Exemplo:
-
-``` Python
-
-x = 5 + 3;
-
-print(x * 2);
-```
-
-Gera:
-
-```
-t1 = 5 + 3
-
-x = t1
-
-t2 = x * 2
-
-print t2
-```
-
-Concluindo. No arquivo codegen.py são carregados os tokens e o parser gerado em parser.py,
-
-onde  é  construído  as  variáveis  temporárias  chamadas  t1,  t2  e  t3  após  construir  a  AST,
-
-montando claramente as operações realizadas.
+</div>
